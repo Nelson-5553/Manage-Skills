@@ -23,6 +23,11 @@
     "views": {
       "manageSkillsView": [
         {
+          "id": "suggestedSkillsView",
+          "name": "Suggested Skills",
+          "icon": "resources/suggested-skills-icon.svg"
+        },
+        {
           "id": "skillsView",
           "name": "Skills",
           "icon": "resources/skills-icon.svg"

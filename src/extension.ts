@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { SkillsService } from './services/SkillsService';
 import { AvailableSkillsProvider } from './providers/AvailableSkillsProvider';
 import { InstalledSkillsProvider } from './providers/InstalledSkillsProvider';
+import { SuggestedSkillsProvider } from './providers/SuggestedSkillsProvider';
 
 /**
  * Contexto global de la extensión
@@ -9,6 +10,7 @@ import { InstalledSkillsProvider } from './providers/InstalledSkillsProvider';
 let skillsService: SkillsService;
 let availableSkillsProvider: AvailableSkillsProvider;
 let installedSkillsProvider: InstalledSkillsProvider;
+let suggestedSkillsProvider: SuggestedSkillsProvider;
 
 /**
  * Esta función se ejecuta cuando la extensión se activa
@@ -22,6 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Inicializar los providers
 	availableSkillsProvider = new AvailableSkillsProvider(skillsService.getAvailableTechnologies());
 	installedSkillsProvider = new InstalledSkillsProvider(skillsService.getInstalledTechnologies());
+	suggestedSkillsProvider = new SuggestedSkillsProvider(skillsService.getAvailableTechnologies());
 
 	// Registrar los providers en VS Code
 	context.subscriptions.push(
@@ -30,12 +33,16 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.window.registerTreeDataProvider('installedSkillsView', installedSkillsProvider)
 	);
+	context.subscriptions.push(
+		vscode.window.registerTreeDataProvider('suggestedSkillsView', suggestedSkillsProvider)
+	);
 
 	// Escuchar cambios en las tecnologías
 	context.subscriptions.push(
 		skillsService.onTechnologiesChanged((technologies) => {
 			availableSkillsProvider.updateTechnologies(technologies.filter(t => !t.installed));
 			installedSkillsProvider.updateTechnologies(technologies.filter(t => t.installed));
+			suggestedSkillsProvider.updateTechnologies(technologies);
 		})
 	);
 
@@ -52,7 +59,9 @@ export function activate(context: vscode.ExtensionContext) {
 function detectWorkspaceTechnologies(): void {
 	if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
 		const workspaceFolder = vscode.workspace.workspaceFolders[0];
-		skillsService.detectTechnologies(workspaceFolder.uri.fsPath);
+		const workspacePath = workspaceFolder.uri.fsPath;
+		skillsService.detectTechnologies(workspacePath);
+		suggestedSkillsProvider.setWorkspacePath(workspacePath);
 	}
 }
 
@@ -107,4 +116,5 @@ export function deactivate(): void {
 	skillsService?.dispose();
 	availableSkillsProvider?.dispose();
 	installedSkillsProvider?.dispose();
+	suggestedSkillsProvider?.dispose();
 }

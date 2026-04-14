@@ -90,6 +90,14 @@ function registerCommands(context: vscode.ExtensionContext): void {
 			vscode.window.showInformationMessage('Tecnologías redetectadas');
 		})
 	);
+
+	// Comando: Copiar skill path al clipboard
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.copySkillPath', async (skillPath: string) => {
+			await vscode.env.clipboard.writeText(skillPath);
+			vscode.window.showInformationMessage(`✓ Skill copiado: ${skillPath}`);
+		})
+	);
 }
 
 /**

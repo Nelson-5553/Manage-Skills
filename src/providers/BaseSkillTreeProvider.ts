@@ -2,22 +2,27 @@ import * as vscode from 'vscode';
 import { Technology } from '../models/Technology';
 
 /**
+ * Tipo unión para representar cualquier elemento del árbol
+ */
+export type TreeElement = TechnologyTreeItem | SkillItemTreeItem;
+
+/**
  * Provider base para los árboles de tecnologías
  */
-export abstract class BaseSkillTreeProvider implements vscode.TreeDataProvider<TechnologyTreeItem> {
-	protected _onDidChangeTreeData: vscode.EventEmitter<TechnologyTreeItem | undefined | null | void> = 
-		new vscode.EventEmitter<TechnologyTreeItem | undefined | null | void>();
+export abstract class BaseSkillTreeProvider implements vscode.TreeDataProvider<TreeElement> {
+	protected _onDidChangeTreeData: vscode.EventEmitter<TreeElement | undefined | null | void> = 
+		new vscode.EventEmitter<TreeElement | undefined | null | void>();
 	
-	readonly onDidChangeTreeData: vscode.Event<TechnologyTreeItem | undefined | null | void> = 
+	readonly onDidChangeTreeData: vscode.Event<TreeElement | undefined | null | void> = 
 		this._onDidChangeTreeData.event;
 
 	constructor(protected technologies: Technology[]) {}
 
-	getTreeItem(element: TechnologyTreeItem): vscode.TreeItem {
+	getTreeItem(element: TreeElement): vscode.TreeItem {
 		return element;
 	}
 
-	abstract getChildren(element?: TechnologyTreeItem): Thenable<TechnologyTreeItem[]>;
+	abstract getChildren(element?: TreeElement): Thenable<TreeElement[]>;
 
 	refresh(): void {
 		this._onDidChangeTreeData.fire(undefined);
@@ -39,14 +44,12 @@ export abstract class BaseSkillTreeProvider implements vscode.TreeDataProvider<T
 export class TechnologyTreeItem extends vscode.TreeItem {
 	constructor(
 		public readonly technology: Technology,
-		collapsibleState: vscode.TreeItemCollapsibleState = vscode.TreeItemCollapsibleState.None
+		collapsibleState: vscode.TreeItemCollapsibleState = vscode.TreeItemCollapsibleState.Collapsed
 	) {
 		super(technology.name, collapsibleState);
 		this.description = `${technology.skills.length} skills`;
 		this.tooltip = this.buildTooltip();
 		this.contextValue = technology.installed ? 'installed-technology' : 'available-technology';
-		this.iconPath = '/resources/icons/nodejs.svg';
-		
 	}
 
 	private buildTooltip(): string {
@@ -61,5 +64,30 @@ export class TechnologyTreeItem extends vscode.TreeItem {
 		tooltip += `Skills: ${this.technology.skills.length}`;
 		
 		return tooltip;
+	}
+}
+
+/**
+ * Elemento del árbol que representa un skill individual
+ */
+export class SkillItemTreeItem extends vscode.TreeItem {
+	constructor(
+		public readonly skillName: string,
+		public readonly technologyId: string
+	) {
+		super(skillName, vscode.TreeItemCollapsibleState.None);
+		this.tooltip = this.buildTooltip();
+		this.contextValue = 'skill-item';
+		
+		// Comando para copiar el skill al clipboard
+		this.command = {
+			title: 'Copy Skill Path',
+			command: 'manage-skills.copySkillPath',
+			arguments: [skillName]
+		};
+	}
+
+	private buildTooltip(): string {
+		return `Skill: ${this.skillName}\n\nClick para copiar la ruta del skill`;
 	}
 }

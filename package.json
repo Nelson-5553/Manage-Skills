@@ -9,9 +9,31 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "manageSkillsView",
+          "title": "Manage Skills",
+          "icon": "resources/skills-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "manageSkillsView": [
+        {
+          "id": "skillsView",
+          "name": "Skills",
+          "icon": "resources/skills-icon.svg"
+        },
+        {
+          "id": "installedSkillsView",
+          "name": "Installed Skills",
+          "icon": "resources/installed-skills-icon.svg"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "manage-skills.helloWorld",

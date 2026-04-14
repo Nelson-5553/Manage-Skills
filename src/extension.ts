@@ -1,63 +1,102 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as path from 'path';
+import { SkillsService } from './services/SkillsService';
+import { AvailableSkillsProvider } from './providers/AvailableSkillsProvider';
+import { InstalledSkillsProvider } from './providers/InstalledSkillsProvider';
 
-class SkillTreeProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
-	constructor(private readonly items: vscode.TreeItem[]) {}
+/**
+ * Contexto global de la extensión
+ */
+let skillsService: SkillsService;
+let availableSkillsProvider: AvailableSkillsProvider;
+let installedSkillsProvider: InstalledSkillsProvider;
 
-	getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
-		return element;
-	}
-
-	getChildren(): Thenable<vscode.TreeItem[]> {
-		return Promise.resolve(this.items);
-	}
-}
-
-function createSkillItem(
-	context: vscode.ExtensionContext,
-	label: string,
-	iconFileName: string
-): vscode.TreeItem {
-	const item = new vscode.TreeItem(label, vscode.TreeItemCollapsibleState.None);
-	item.iconPath = vscode.Uri.file(path.join(context.extensionPath, 'resources', 'icons', iconFileName));
-	return item;
-}
-
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+/**
+ * Esta función se ejecuta cuando la extensión se activa
+ */
 export function activate(context: vscode.ExtensionContext) {
+	console.log('Extensión "manage-skills" activada');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	// console.log('Congratulations, your extension "manage-skills" is now active!');
+	// Inicializar el servicio de skills
+	skillsService = new SkillsService();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('manage-skills.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from manage-skills!');
-	});
+	// Inicializar los providers
+	availableSkillsProvider = new AvailableSkillsProvider(skillsService.getAvailableTechnologies());
+	installedSkillsProvider = new InstalledSkillsProvider(skillsService.getInstalledTechnologies());
 
-	const availableSkillsProvider = new SkillTreeProvider([
-		createSkillItem(context, 'TypeScript', 'typescript.svg'),
-		createSkillItem(context, 'React', 'react.svg'),
-		createSkillItem(context, 'Node.js', 'nodejs.svg')
-	]);
+	// Registrar los providers en VS Code
+	context.subscriptions.push(
+		vscode.window.registerTreeDataProvider('skillsView', availableSkillsProvider)
+	);
+	context.subscriptions.push(
+		vscode.window.registerTreeDataProvider('installedSkillsView', installedSkillsProvider)
+	);
 
-	const installedSkillsProvider = new SkillTreeProvider([
-		createSkillItem(context, 'TypeScript - installed', 'typescript.svg'),
-		createSkillItem(context, 'Node.js - installed', 'nodejs.svg')
-	]);
+	// Escuchar cambios en las tecnologías
+	context.subscriptions.push(
+		skillsService.onTechnologiesChanged((technologies) => {
+			availableSkillsProvider.updateTechnologies(technologies.filter(t => !t.installed));
+			installedSkillsProvider.updateTechnologies(technologies.filter(t => t.installed));
+		})
+	);
 
-	context.subscriptions.push(vscode.window.registerTreeDataProvider('skillsView', availableSkillsProvider));
-	context.subscriptions.push(vscode.window.registerTreeDataProvider('installedSkillsView', installedSkillsProvider));
+	// Detectar tecnologías en el workspace
+	detectWorkspaceTechnologies();
 
-	context.subscriptions.push(disposable);
+	// Registrar comandos
+	registerCommands(context);
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+/**
+ * Detecta tecnologías en los workspaces abiertos
+ */
+function detectWorkspaceTechnologies(): void {
+	if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+		const workspaceFolder = vscode.workspace.workspaceFolders[0];
+		skillsService.detectTechnologies(workspaceFolder.uri.fsPath);
+	}
+}
+
+/**
+ * Registra todos los comandos de la extensión
+ */
+function registerCommands(context: vscode.ExtensionContext): void {
+	// Comando: Hello World
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.helloWorld', () => {
+			vscode.window.showInformationMessage('Hello World desde manage-skills!');
+		})
+	);
+
+	// Comando: Marcar tecnología como instalada
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.markTechnologyInstalled', (technologyId: string) => {
+			skillsService.markTechnologyInstalled(technologyId);
+			vscode.window.showInformationMessage(`Tecnología ${technologyId} marcada como instalada`);
+		})
+	);
+
+	// Comando: Marcar tecnología como no instalada
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.markTechnologyNotInstalled', (technologyId: string) => {
+			skillsService.markTechnologyNotInstalled(technologyId);
+			vscode.window.showInformationMessage(`Tecnología ${technologyId} marcada como no instalada`);
+		})
+	);
+
+	// Comando: Redetectar tecnologías
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.redetectTechnologies', () => {
+			detectWorkspaceTechnologies();
+			vscode.window.showInformationMessage('Tecnologías redetectadas');
+		})
+	);
+}
+
+/**
+ * Esta función se ejecuta cuando la extensión se desactiva
+ */
+export function deactivate(): void {
+	skillsService?.dispose();
+	availableSkillsProvider?.dispose();
+	installedSkillsProvider?.dispose();
+}

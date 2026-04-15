@@ -67,8 +67,9 @@ export class TechnologyTreeItem extends vscode.TreeItem {
 			const iconUri = vscode.Uri.joinPath(extensionUri, technology.icon);
 			this.iconPath = { light: iconUri, dark: iconUri };
 		} else {
-			const fallbackUri = vscode.Uri.joinPath(extensionUri, "resources/icons/nodejs.svg");
-			this.iconPath = { light: fallbackUri, dark: fallbackUri };
+			const fallbackUriLight = vscode.Uri.joinPath(extensionUri, "resources/empty-icon-light.svg");
+			const fallbackUriDark = vscode.Uri.joinPath(extensionUri, "resources/empty-icon-dark.svg");
+			this.iconPath = { light: fallbackUriLight, dark: fallbackUriDark };
 		} 
 	}
 

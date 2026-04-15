@@ -49,7 +49,7 @@ export const SKILLS_MAP: Technology[] = [
       "vercel-labs/next-skills/next-cache-components",
       "vercel-labs/next-skills/next-upgrade",
     ],
-    icon: "https://svgl.app/library/nextjs_logo_dark.svg"
+    icon: "resources/icons/nextjs_icon_dark.svg"
   },
   {
     id: "vue",
@@ -63,7 +63,7 @@ export const SKILLS_MAP: Technology[] = [
       "antfu/skills/vue",
       "antfu/skills/vue-best-practices",
     ],
-    icon: "https://svgl.app/library/vue.svg"
+    icon: "resources/icons/vue.svg"
   },
   {
     id: "nuxt",
@@ -73,7 +73,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["nuxt.config.js", "nuxt.config.ts"],
     },
     skills: ["antfu/skills/nuxt"],
-    icon: "https://svgl.app/library/nuxt-wordmark-dark.svg"
+    icon: "resources/icons/nuxt.svg"
   },
   {
     id: "pinia",
@@ -82,7 +82,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["pinia"],
     },
     skills: ["vuejs-ai/skills/vue-pinia-best-practices"],
-    icon: "https://svgl.app/library/pinia.svg"
+    icon: "resources/icons/pinia.svg"
   },
   {
     id: "svelte",
@@ -95,7 +95,7 @@ export const SKILLS_MAP: Technology[] = [
       "ejirocodes/agent-skills/svelte5-best-practices",
       "sveltejs/ai-tools/svelte-code-writer",
     ],
-    icon: "https://svgl.app/library/svelte.svg"
+    icon: "resources/icons/svelte.svg"
   },
   {
     id: "angular",
@@ -112,7 +112,7 @@ export const SKILLS_MAP: Technology[] = [
       "angular/angular/adev-writing-guide",
       "angular/angular/PR Review",
     ],
-    icon: "https://svgl.app/library/angular.svg"
+    icon: "resources/icons/angular.svg"
   },
   {
     id: "astro",
@@ -122,7 +122,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["astro.config.mjs", "astro.config.js", "astro.config.ts"],
     },
     skills: ["astrolicious/agent-skills/astro"],
-    icon: "https://svgl.app/library/astro-icon-dark.svg"
+    icon: "resources/icons/astro-icon-dark.svg"
   },
   {
     id: "tailwind",
@@ -132,7 +132,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["tailwind.config.js", "tailwind.config.ts", "tailwind.config.cjs"],
     },
     skills: ["giuseppe-trisciuoglio/developer-kit/tailwind-css-patterns"],
-    icon: "https://svgl.app/library/tailwindcss.svg"
+    icon: "resources/icons/tailwindcss.svg"
   },
   {
     id: "shadcn",
@@ -141,7 +141,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["components.json"],
     },
     skills: ["shadcn/ui/shadcn"],
-    icon: "https://svgl.app/library/shadcn-ui_dark.svg"
+    icon: "resources/icons/shadcn-ui_dark.svg"
   },
   {
     id: "typescript",
@@ -151,7 +151,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["tsconfig.json"],
     },
     skills: ["wshobson/agents/typescript-advanced-types"],
-    icon: "https://svgl.app/library/typescript.svg"
+    icon: "resources/icons/typescript.svg"
   },
   {
     id: "zod",
@@ -160,7 +160,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["zod"],
     },
     skills: ["pproenca/dot-skills/zod"],
-    icon: "https://svgl.app/library/zod.svg"
+    icon: "resources/icons/zod.svg"
   },
   {
     id: "supabase",
@@ -169,7 +169,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["@supabase/supabase-js", "@supabase/ssr"],
     },
     skills: ["supabase/agent-skills/supabase-postgres-best-practices"],
-    icon: "https://svgl.app/library/supabase.svg"
+    icon: "resources/icons/supabase.svg"
   },
   {
     id: "neon",
@@ -178,7 +178,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["@neondatabase/serverless"],
     },
     skills: ["neondatabase/agent-skills/neon-postgres"],
-    icon: "https://svgl.app/library/neon.svg"
+    icon: "resources/icons/neon.svg"
   },
   {
     id: "playwright",
@@ -188,7 +188,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["playwright.config.ts", "playwright.config.js"],
     },
     skills: ["currents-dev/playwright-best-practices-skill/playwright-best-practices"],
-    icon: "https://svgl.app/library/playwright.svg"
+    icon: "resources/icons/playwright.svg"
   },
   {
     id: "expo",
@@ -207,7 +207,7 @@ export const SKILLS_MAP: Technology[] = [
       "expo/skills/expo-api-routes",
       "expo/skills/use-dom",
     ],
-    icon: "https://svgl.app/library/expo.svg"
+    icon: "resources/icons/expo.svg"
   },
   {
     id: "react-native",
@@ -216,7 +216,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["react-native"],
     },
     skills: ["sleekdotdesign/agent-skills/sleek-design-mobile-apps"],
-    icon: "https://svgl.app/library/react_dark.svg"
+    icon: "resources/icons/react.svg"
   },
   {
     id: "dart",
@@ -225,7 +225,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["pubspec.yaml"],
     },
     skills: ["kevmoo/dash_skills/dart-best-practices"],
-    icon: "https://svgl.app/library/dart.svg"
+    icon: "resources/icons/dart.svg"
   },
   {
     id: "flutter",
@@ -241,7 +241,7 @@ export const SKILLS_MAP: Technology[] = [
       "madteacher/mad-agents-skills/flutter-animations",
       "madteacher/mad-agents-skills/flutter-testing",
     ],
-    icon: "https://svgl.app/library/flutter.svg"
+    icon: "resources/icons/flutter.svg"
 
   },
   {
@@ -262,7 +262,7 @@ export const SKILLS_MAP: Technology[] = [
       "Kotlin/kotlin-agent-skills/kotlin-tooling-cocoapods-spm-migration",
       "Kotlin/kotlin-agent-skills/kotlin-tooling-agp9-migration",
     ],
-    icon: "https://svgl.app/library/kotlin.svg"
+    icon: "resources/icons/kotlin.svg"
   },
   {
     id: "android",
@@ -289,7 +289,7 @@ export const SKILLS_MAP: Technology[] = [
       "krutikJain/android-agent-skills/android-networking-retrofit-okhttp",
       "krutikJain/android-agent-skills/android-testing-unit",
     ],
-    icon: "https://svgl.app/library/android-icon.svg"
+    icon: "resources/icons/android-icon.svg"
   },
   {
     id: "remotion",
@@ -298,7 +298,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["remotion", "@remotion/cli"],
     },
     skills: ["remotion-dev/skills/remotion-best-practices"],
-    icon: "https://svgl.app/library/remotion.svg"
+    icon: "resources/icons/remotion.svg"
   },
   {
     id: "react-router",
@@ -315,7 +315,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["@tanstack/react-start", "@tanstack/start"],
     },
     skills: ["tanstack-skills/tanstack-skills/tanstack-start"],
-    icon: "https://svgl.app/library/tanstack.svg"
+    icon: "resources/icons/tanstack.svg"
   },
   {
     id: "chrome-extension",
@@ -327,7 +327,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: ["mindrally/skills/chrome-extension-development"],
-    icon: "https://svgl.app/library/chrome.svg"
+    icon: "resources/icons/chrome.svg"
   },
   {
     id: "clerk",
@@ -369,7 +369,7 @@ export const SKILLS_MAP: Technology[] = [
       "clerk/skills/clerk-webhooks",
       "clerk/skills/clerk-testing",
     ],
-    icon: "https://svgl.app/library/clerk-icon-light.svg"
+    icon: "resources/icons/clerk-icon-dark.svg"
 
   },
   {
@@ -384,7 +384,7 @@ export const SKILLS_MAP: Technology[] = [
       "better-auth/skills/organization-best-practices",
       "better-auth/skills/two-factor-authentication-best-practices",
     ],
-    icon: "https://svgl.app/library/better-auth_light.svg"
+    icon: "resources/icons/better-auth-dark.svg"
   },
   {
     id: "turborepo",
@@ -394,7 +394,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["turbo.json"],
     },
     skills: ["vercel/turborepo/turborepo"],
-    icon: "https://svgl.app/library/turborepo-icon-dark.svg"
+    icon: "resources/icons/turborepo-icon-dark.svg"
   },
   {
     id: "vite",
@@ -404,7 +404,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["vite.config.js", "vite.config.ts", "vite.config.mjs"],
     },
     skills: ["antfu/skills/vite"],
-    icon: "https://svgl.app/library/vite.svg"
+    icon: "resources/icons/vite.svg"
   },
   {
     id: "azure",
@@ -418,7 +418,7 @@ export const SKILLS_MAP: Technology[] = [
       "microsoft/github-copilot-for-azure/azure-cost-optimization",
       "microsoft/github-copilot-for-azure/azure-diagnostics",
     ],
-    icon: "https://svgl.app/library/azure.svg"
+    icon: "resources/icons/azure.svg"
   },
   {
     id: "vercel-ai",
@@ -427,7 +427,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["ai", "@ai-sdk/openai", "@ai-sdk/anthropic", "@ai-sdk/google"],
     },
     skills: ["vercel/ai/ai-sdk"],
-    icon: "https://svgl.app/library/vercel_dark.svg"
+    icon: "resources/icons/vercel_dark.svg"
   },
   {
     id: "elevenlabs",
@@ -445,7 +445,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["vercel", "@astrojs/vercel"],
     },
     skills: ["vercel-labs/agent-skills/deploy-to-vercel"],
-    icon: "https://svgl.app/library/vercel_dark.svg"
+    icon: "resources/icons/vercel_dark.svg"
   },
   {
     id: "cloudflare",
@@ -461,7 +461,7 @@ export const SKILLS_MAP: Technology[] = [
       "cloudflare/skills/web-perf",
       "openai/skills/cloudflare-deploy",
     ],
-    icon: "https://svgl.app/library/cloudflare.svg"
+    icon: "resources/icons/cloudflare.svg"
   },
   {
     id: "cloudflare-durable-objects",
@@ -473,7 +473,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: ["cloudflare/skills/durable-objects"],
-    icon: "https://svgl.app/library/cloudflare.svg"
+    icon: "resources/icons/cloudflare.svg"
   },
   {
     id: "cloudflare-agents",
@@ -486,7 +486,7 @@ export const SKILLS_MAP: Technology[] = [
       "cloudflare/skills/building-mcp-server-on-cloudflare",
       "cloudflare/skills/sandbox-sdk",
     ],
-    icon: "https://svgl.app/library/cloudflare.svg"
+    icon: "resources/icons/cloudflare.svg"
   },
   {
     id: "cloudflare-ai",
@@ -499,7 +499,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: ["cloudflare/skills/building-ai-agent-on-cloudflare"],
-    icon: "https://svgl.app/library/cloudflare.svg"
+    icon: "resources/icons/cloudflare.svg"
   },
   {
     id: "terraform",
@@ -519,7 +519,7 @@ export const SKILLS_MAP: Technology[] = [
       "hashicorp/agent-skills/terraform-stacks",
       "wshobson/agents/terraform-module-library",
     ],
-    icon: "https://svgl.app/library/terraform.svg"
+    icon: "resources/icons/terraform.svg"
   },
   {
     id: "aws",
@@ -528,7 +528,7 @@ export const SKILLS_MAP: Technology[] = [
       packagePatterns: [/^@aws-sdk\//, /^aws-cdk/],
     },
     skills: [],
-    icon: "https://svgl.app/library/aws_dark.svg"
+    icon: "resources/icons/aws_dark.svg"
   },
   {
     id: "swiftui",
@@ -543,7 +543,7 @@ export const SKILLS_MAP: Technology[] = [
       "avdlee/swift-testing-agent-skill",
       "avdlee/core-data-agent-skill",
     ],
-    icon: "https://svgl.app/library/swift.svg"
+    icon: "resources/icons/swift.svg"
   },
   {
     id: "oxlint",
@@ -588,7 +588,7 @@ export const SKILLS_MAP: Technology[] = [
       "cloudai-x/threejs-skills/threejs-textures",
       "cloudai-x/threejs-skills/threejs-loaders",
     ],
-    icon: "https://svgl.app/library/threejs-dark.svg"
+    icon: "resources/icons/threejs-dark.svg"
   },
   {
     id: "@react-three/fiber",
@@ -605,7 +605,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["bun.lockb", "bun.lock", "bunfig.toml"],
     },
     skills: ["https://bun.sh/docs"],
-    icon: "https://svgl.app/library/bun.svg"
+    icon: "resources/icons/bun.svg"
   },
   {
     id: "node",
@@ -617,7 +617,7 @@ export const SKILLS_MAP: Technology[] = [
       "wshobson/agents/nodejs-backend-patterns",
       "sickn33/antigravity-awesome-skills/nodejs-best-practices",
     ],
-    icon: "https://svgl.app/library/nodejs.svg"
+    icon: "resources/icons/nodejs.svg"
   },
   {
     id: "express",
@@ -626,7 +626,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["express"],
     },
     skills: [],
-    icon: "https://svgl.app/library/expressjs_dark.svg"
+    icon: "resources/icons/expressjs_dark.svg"
 
   },
   {
@@ -639,7 +639,7 @@ export const SKILLS_MAP: Technology[] = [
       "affaan-m/everything-claude-code/golang-patterns",
       "affaan-m/everything-claude-code/golang-testing",
     ],
-    icon: "https://svgl.app/library/golang_dark.svg"
+    icon: "resources/icons/golang_dark.svg"
   },
   {
     id: "deno",
@@ -655,7 +655,7 @@ export const SKILLS_MAP: Technology[] = [
       "denoland/skills/deno-sandbox",
       "mindrally/skills/deno-typescript",
     ],
-    icon: "https://svgl.app/library/deno_dark.svg"
+    icon: "resources/icons/deno_dark.svg"
   },
   {
     id: "wordpress",
@@ -678,7 +678,7 @@ export const SKILLS_MAP: Technology[] = [
       "wordpress/agent-skills/wp-project-triage",
       "wordpress/agent-skills/wp-wpcli-and-ops",
     ],
-    icon: "https://svgl.app/library/wordpress.svg"
+    icon: "resources/icons/wordpress.svg"
   },
   {
     id: "java",
@@ -702,7 +702,7 @@ export const SKILLS_MAP: Technology[] = [
       "github/awesome-copilot/java-docs",
       "affaan-m/everything-claude-code/java-coding-standards",
     ],
-    icon: "https://svgl.app/library/java.svg"
+    icon: "resources/icons/java.svg"
   },
   {
     id: "springboot",
@@ -732,7 +732,7 @@ export const SKILLS_MAP: Technology[] = [
       "prisma/skills/prisma-cli",
       "prisma/skills/prisma-postgres",
     ],
-    icon: "https://svgl.app/library/prisma_dark.svg"
+    icon: "resources/icons/prisma_dark.svg"
   },
   {
     id: "stripe",
@@ -749,7 +749,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["hono"],
     },
     skills: ["yusukebe/hono-skill/hono"],
-    icon: "https://svgl.app/library/hono.svg"
+    icon: "resources/icons/hono.svg"
   },
   {
     id: "vitest",
@@ -759,7 +759,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["vitest.config.ts", "vitest.config.js", "vitest.config.mts"],
     },
     skills: ["antfu/skills/vitest"],
-    icon: "https://svgl.app/library/vitest.svg"
+    icon: "resources/icons/vitest.svg"
   },
   {
     id: "drizzle",
@@ -768,7 +768,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["drizzle-orm", "drizzle-kit"],
     },
     skills: ["bobmatnyc/claude-mpm-skills/drizzle-orm"],
-    icon: "https://svgl.app/library/drizzle-orm_dark.svg"
+    icon: "resources/icons/drizzle-orm_dark.svg"
 
   },
   {
@@ -778,7 +778,7 @@ export const SKILLS_MAP: Technology[] = [
       packages: ["@nestjs/core"],
     },
     skills: ["kadajett/agent-nestjs-skills/nestjs-best-practices"],
-      icon: "https://svgl.app/library/nestjs.svg"
+      icon: "resources/icons/nestjs.svg"
   },
   {
     id: "tauri",
@@ -788,7 +788,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["src-tauri/tauri.conf.json"],
     },
     skills: ["nodnarbnitram/claude-code-extensions/tauri-v2"],
-    icon: "https://svgl.app/library/tauri.svg"
+    icon: "resources/icons/tauri.svg"
   },
   {
     id: "electron",
@@ -810,7 +810,7 @@ export const SKILLS_MAP: Technology[] = [
       ],
     },
     skills: ["vercel-labs/agent-skills/electron-best-practices"],
-    icon: "https://svgl.app/library/electron.svg"
+    icon: "resources/icons/electron.svg"
   },
   {
     id: "rust",
@@ -819,7 +819,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["Cargo.toml"],
     },
     skills: ["apollographql/skills/rust-best-practices"],
-    icon: "https://svgl.app/library/rust_dark.svg"
+    icon: "resources/icons/rust_dark.svg"
   },
   {
     id: "ruby",
@@ -828,7 +828,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["Gemfile", "Gemfile.lock", ".ruby-version", ".ruby-gemset"],
     },
     skills: ["lucianghinda/superpowers-ruby/ruby"],
-      icon: "https://svgl.app/library/ruby.svg"
+      icon: "resources/icons/ruby.svg"
   },
   {
     id: "rails",
@@ -846,7 +846,7 @@ export const SKILLS_MAP: Technology[] = [
       "igmarin/rails-agent-skills/rails-security-review",
       "ombulabs/claude-code_rails-upgrade-skill/rails-upgrade",
     ],
-    icon: "https://svgl.app/library/ruby.svg"
+    icon: "resources/icons/ruby.svg"
   },
   {
     id: "redis-ruby",
@@ -855,7 +855,6 @@ export const SKILLS_MAP: Technology[] = [
       gems: ["redis", "sidekiq", "resque", "redis-rails"],
     },
     skills: ["redis/agent-skills/redis-development"],
-    icon: "https://svgl.app/library/ruby.svg"
   },
   {
     id: "postgres-ruby",
@@ -864,7 +863,7 @@ export const SKILLS_MAP: Technology[] = [
       gems: ["pg"],
     },
     skills: [],
-    icon: "https://svgl.app/library/postgresql.svg"
+    icon: "resources/icons/postgresql.svg"
   },
   {
     id: "python",
@@ -873,7 +872,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["pyproject.toml", "requirements.txt", "setup.py", "setup.cfg", "Pipfile"],
     },
     skills: [],
-    icon: "https://svgl.app/library/python.svg"
+    icon: "resources/icons/python.svg"
   },
   {
     id: "sorbet",
@@ -906,7 +905,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: [],
-    icon: "https://svgl.app/library/django.svg"
+    icon: "resources/icons/django.svg"
   },
   {
     id: "devise",
@@ -915,6 +914,7 @@ export const SKILLS_MAP: Technology[] = [
       gems: ["devise"],
     },
     skills: [],
+    icon: "resources/icons/devise.svg"
   },
   {
     id: "fastapi",
@@ -926,7 +926,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: [],
-    icon: "https://svgl.app/library/fastapi.svg"
+    icon: "resources/icons/fastapi.svg"
   },
   {
     id: "sidekiq",
@@ -957,6 +957,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: [".rubocop.yml"],
     },
     skills: [],
+    icon: "resources/icons/rubocop.svg"
   },
   {
     id: "php",
@@ -965,7 +966,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["composer.json", "composer.lock"],
     },
     skills: ["jeffallan/claude-skills/php-pro"],
-    icon: "https://svgl.app/library/php_dark.svg"
+    icon: "resources/icons/php_dark.svg"
   },
   {
     id: "laravel",
@@ -981,7 +982,7 @@ export const SKILLS_MAP: Technology[] = [
       "jeffallan/claude-skills/laravel-specialist",
       "affaan-m/everything-claude-code/laravel-patterns",
     ],
-    icon: "https://svgl.app/library/laravel.svg"
+    icon: "resources/icons/laravel.svg"
   },
   {
     id: "flask",
@@ -993,7 +994,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: [],
-    icon: "https://svgl.app/library/flask-dark.svg"
+    icon: "resources/icons/flask-dark.svg"
   },
   {
     id: "python",
@@ -1002,7 +1003,7 @@ export const SKILLS_MAP: Technology[] = [
       configFiles: ["pyproject.toml", "requirements.txt", "setup.py", "Pipfile"],
     },
     skills: ["inferen-sh/skills/python-executor", "wshobson/agents/python-testing-patterns"],
-    icon: "https://svgl.app/library/python.svg"
+    icon: "resources/icons/python.svg"
   },
   {
     id: "fastapi",
@@ -1018,7 +1019,7 @@ export const SKILLS_MAP: Technology[] = [
       "mindrally/skills/fastapi-python",
       "jezweb/claude-skills/fastapi",
     ],
-    icon: "https://svgl.app/library/fastapi.svg"  
+    icon: "resources/icons/fastapi.svg"  
   },
   {
     id: "django",
@@ -1034,6 +1035,7 @@ export const SKILLS_MAP: Technology[] = [
       "affaan-m/everything-claude-code/django-patterns",
       "affaan-m/everything-claude-code/django-security",
     ],
+    icon: "resources/icons/django.svg"
   },
   {
     id: "flask",
@@ -1045,7 +1047,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: ["jezweb/claude-skills/flask", "aj-geddes/useful-ai-prompts/flask-api-development"],
-    icon: "https://svgl.app/library/flask-dark.svg"
+    icon: "resources/icons/flask-dark.svg"
   },
   {
     id: "pydantic",
@@ -1057,7 +1059,6 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: ["bobmatnyc/claude-mpm-skills/pydantic"],
-
   },
   {
     id: "sqlalchemy",
@@ -1083,6 +1084,7 @@ export const SKILLS_MAP: Technology[] = [
       },
     },
     skills: ["wshobson/agents/python-testing-patterns"],
+    icon: "resources/icons/python.svg"
   },
   {
     id: "pandas",
@@ -1097,6 +1099,7 @@ export const SKILLS_MAP: Technology[] = [
       "jeffallan/claude-skills/pandas-pro",
       "pluginagentmarketplace/custom-plugin-python/pandas-data-analysis",
     ],
+    icon: "resources/icons/python.svg"
   },
   {
     id: "numpy",
@@ -1111,7 +1114,7 @@ export const SKILLS_MAP: Technology[] = [
       "pluginagentmarketplace/custom-plugin-python/machine-learning",
       "pluginagentmarketplace/custom-plugin-python/pandas-data-analysis",
     ],
-    icon: "https://svgl.app/library/python.svg"
+    icon: "resources/icons/python.svg"
   },
   {
     id: "scikit-learn",

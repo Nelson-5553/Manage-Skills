@@ -12,7 +12,7 @@ export class InstalledSkillsProvider extends BaseSkillTreeProvider {
 		if (!element) {
 			const installedTechs = this.technologies.filter(tech => tech.installed);
 			return Promise.resolve(
-				installedTechs.map(tech => new TechnologyTreeItem(tech))
+				installedTechs.map(tech => new TechnologyTreeItem(tech, this.extensionUri))
 			);
 		}
 
@@ -40,7 +40,7 @@ export class InstalledSkillsProvider extends BaseSkillTreeProvider {
 					tech.id.toLowerCase().includes(lowerQuery)
 				)
 			)
-			.map(tech => new TechnologyTreeItem(tech));
+			.map(tech => new TechnologyTreeItem(tech, this.extensionUri));
 	}
 
 	/**

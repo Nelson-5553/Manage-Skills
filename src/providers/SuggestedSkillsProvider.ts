@@ -11,8 +11,9 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	private workspacePath: string = '';
 	private detectedTechnologies: Technology[] = [];
 
-	constructor(technologies: Technology[]) {
-		super(technologies);
+	constructor(technologies: Technology[],  extensionUri: vscode.Uri) {
+		super(technologies, extensionUri);
+		
 	}
 
 	/**
@@ -55,12 +56,13 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	}
 
 	getChildren(element?: TreeElement): Thenable<TreeElement[]> {
-		// Si no hay elemento, retornamos las tecnologías raíz (sugeridas/detectadas)
-		if (!element) {
-			return Promise.resolve(
-				this.detectedTechnologies.map(tech => new TechnologyTreeItem(tech))
-			);
-		}
+        if (!element) {
+            return Promise.resolve(
+                this.detectedTechnologies.map(tech => 
+                    new TechnologyTreeItem(tech, this.extensionUri) // ← añadir this.extensionUri
+                )
+            );
+        }
 
 		// Si el elemento es una tecnología, retornamos sus skills
 		if (element instanceof TechnologyTreeItem) {

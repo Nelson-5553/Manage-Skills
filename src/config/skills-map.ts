@@ -35,7 +35,7 @@ export const SKILLS_MAP: Technology[] = [
       "vercel-labs/agent-skills/vercel-react-best-practices",
       "vercel-labs/agent-skills/vercel-composition-patterns",
     ],
-    icon: "https://svgl.app/library/react_dark.svg"
+    icon: "resources/icons/react.svg"
   },
   {
     id: "nextjs",

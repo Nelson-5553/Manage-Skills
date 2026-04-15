@@ -22,9 +22,9 @@ export function activate(context: vscode.ExtensionContext) {
 	skillsService = new SkillsService();
 
 	// Inicializar los providers
-	availableSkillsProvider = new AvailableSkillsProvider(skillsService.getAvailableTechnologies());
-	installedSkillsProvider = new InstalledSkillsProvider(skillsService.getInstalledTechnologies());
-	suggestedSkillsProvider = new SuggestedSkillsProvider(skillsService.getAvailableTechnologies());
+	availableSkillsProvider = new AvailableSkillsProvider(skillsService.getAvailableTechnologies(), context.extensionUri);
+	installedSkillsProvider = new InstalledSkillsProvider(skillsService.getInstalledTechnologies(), context.extensionUri);
+	suggestedSkillsProvider = new SuggestedSkillsProvider(skillsService.getAvailableTechnologies(), context.extensionUri);
 
 	// Registrar los providers en VS Code
 	context.subscriptions.push(

@@ -1,10 +1,23 @@
+import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { SKILLS_MAP, Technology } from '../config/skills-map';
+import { AGENT_FOLDER_MAP, SKILLS_MAP, Technology } from '../config/skills-map';
+
+
 
 /**
  * Servicio para detectar tecnologías instaladas en un proyecto
  */
+export function DetectAgent(workspacePath: string): string | undefined {
+    for (const [folder, agent] of Object.entries(AGENT_FOLDER_MAP)) {
+        const folderPath = path.join(workspacePath, folder);
+        if (fs.existsSync(folderPath)) {
+            return agent;
+        }
+    }
+    return "universal";
+}
+	
 export class DetectionService {
 	/**
 	 * Detecta todas las tecnologías instaladas en un directorio

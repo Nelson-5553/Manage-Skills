@@ -7,6 +7,17 @@ import { DetectionService } from './DetectionService';
  * Servicio central para la gestión de tecnologías y skills
  * Gestiona la detección de tecnologías en el proyecto y sus skills asociados
  */
+
+export function BuildSkillPath(skillName: string, agent: string = "universal"): string {
+    const elements = skillName.split('/');
+    
+    const repo = elements.slice(0, 2).join("/");
+    const skill = elements.slice(2).join("/");
+
+    return "npx -y skills add " + repo + " --skill " + skill + " -a " + agent + " -y";
+    
+}
+
 export class SkillsService {
 	private technologies: Map<string, Technology> = new Map();
 	private onTechnologiesChangedEmitter = new vscode.EventEmitter<Technology[]>();
@@ -151,4 +162,6 @@ export class SkillsService {
 	dispose(): void {
 		this.onTechnologiesChangedEmitter.dispose();
 	}
+
+	
 }

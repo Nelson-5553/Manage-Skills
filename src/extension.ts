@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { SkillsService } from './services/SkillsService';
+import { SkillsService, BuildSkillPath } from './services/SkillsService';
+import { DetectAgent } from './services/DetectionService';
 import { AvailableSkillsProvider } from './providers/AvailableSkillsProvider';
 import { InstalledSkillsProvider } from './providers/InstalledSkillsProvider';
 import { SuggestedSkillsProvider } from './providers/SuggestedSkillsProvider';
@@ -107,6 +108,19 @@ function registerCommands(context: vscode.ExtensionContext): void {
 			vscode.window.showInformationMessage(`✓ Skill copiado: ${skillPath}`);
 		})
 	);
+
+	context.subscriptions.push(
+    vscode.commands.registerCommand('manage-skills.installSkill', async (skillName: string) => {
+        const task = new vscode.Task(
+            { type: 'shell' },
+            vscode.TaskScope.Workspace,
+            `Add skill ${skillName}`,
+            'skills',
+            new vscode.ShellExecution(BuildSkillPath(skillName, DetectAgent(skillsService.getCurrentProjectPath())))
+        );
+        await vscode.tasks.executeTask(task);
+    })
+);
 }
 
 /**

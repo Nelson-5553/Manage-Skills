@@ -97,13 +97,13 @@ export class SkillItemTreeItem extends vscode.TreeItem {
 
 		// Comando para copiar el skill al clipboard
 		this.command = {
-			title: 'Copy Skill Path',
-			command: 'manage-skills.copySkillPath',
+			title: 'Install Skill',
+			command: 'manage-skills.installSkill',
 			arguments: [skillName]
 		};
 	}
 
 	private buildTooltip(): string {
-		return `Skill: ${this.skillName}\n\nClick para copiar la ruta del skill`;
+		return `Skill: ${this.skillName}\n\nClick para instalar el skill`;
 	}
 }

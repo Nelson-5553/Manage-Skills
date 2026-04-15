@@ -76,7 +76,6 @@ export class TechnologyTreeItem extends vscode.TreeItem {
 
 	private buildTooltip(): string {
 		let tooltip = `${this.technology.name}\n`;
-		tooltip += `Estado: ${this.technology.installed ? 'Instalado' : 'Disponible'}\n`;
 		if (this.technology.detectedAt) {
 			tooltip += `Detectado: ${this.technology.detectedAt.toLocaleDateString()}\n`;
 		}

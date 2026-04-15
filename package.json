@@ -31,11 +31,6 @@
           "id": "skillsView",
           "name": "Skills",
           "icon": "resources/skills-icon.svg"
-        },
-        {
-          "id": "installedSkillsView",
-          "name": "Installed Skills",
-          "icon": "resources/installed-skills-icon.svg"
         }
       ]
     },
@@ -43,8 +38,13 @@
       {
         "command": "manage-skills.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "manage-skills.redetectTechnologies",
+        "title": "Refresh Skills"
       }
     ]
+
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

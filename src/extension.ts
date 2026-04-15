@@ -23,16 +23,16 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Inicializar los providers
 	availableSkillsProvider = new AvailableSkillsProvider(skillsService.getAvailableTechnologies(), context.extensionUri);
-	installedSkillsProvider = new InstalledSkillsProvider(skillsService.getInstalledTechnologies(), context.extensionUri);
+	// installedSkillsProvider = new InstalledSkillsProvider(skillsService.getInstalledTechnologies(), context.extensionUri);
 	suggestedSkillsProvider = new SuggestedSkillsProvider(skillsService.getAvailableTechnologies(), context.extensionUri);
 
 	// Registrar los providers en VS Code
 	context.subscriptions.push(
 		vscode.window.registerTreeDataProvider('skillsView', availableSkillsProvider)
 	);
-	context.subscriptions.push(
-		vscode.window.registerTreeDataProvider('installedSkillsView', installedSkillsProvider)
-	);
+	// context.subscriptions.push(
+	// 	vscode.window.registerTreeDataProvider('installedSkillsView', installedSkillsProvider)
+	// );
 	context.subscriptions.push(
 		vscode.window.registerTreeDataProvider('suggestedSkillsView', suggestedSkillsProvider)
 	);
@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		skillsService.onTechnologiesChanged((technologies) => {
 			availableSkillsProvider.updateTechnologies(technologies.filter(t => !t.installed));
-			installedSkillsProvider.updateTechnologies(technologies.filter(t => t.installed));
+			// installedSkillsProvider.updateTechnologies(technologies.filter(t => t.installed));
 			suggestedSkillsProvider.updateTechnologies(technologies);
 		})
 	);
@@ -115,6 +115,6 @@ function registerCommands(context: vscode.ExtensionContext): void {
 export function deactivate(): void {
 	skillsService?.dispose();
 	availableSkillsProvider?.dispose();
-	installedSkillsProvider?.dispose();
+	// installedSkillsProvider?.dispose();
 	suggestedSkillsProvider?.dispose();
 }

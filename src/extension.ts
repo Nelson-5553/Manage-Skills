@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import { SkillsService, BuildSkillPath } from './services/SkillsService';
-import { DetectAgent } from './services/DetectionService';
+import { SkillsService } from './services/SkillsService';
+import { InstallSkillService } from './services/InstallSkillService';
 import { AvailableSkillsProvider } from './providers/AvailableSkillsProvider';
 import { InstalledSkillsProvider } from './providers/InstalledSkillsProvider';
 import { SuggestedSkillsProvider } from './providers/SuggestedSkillsProvider';
@@ -11,6 +9,7 @@ import { SuggestedSkillsProvider } from './providers/SuggestedSkillsProvider';
  * Contexto global de la extensión
  */
 let skillsService: SkillsService;
+let installSkillService: InstallSkillService;
 let availableSkillsProvider: AvailableSkillsProvider;
 let installedSkillsProvider: InstalledSkillsProvider;
 let suggestedSkillsProvider: SuggestedSkillsProvider;
@@ -23,6 +22,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Inicializar el servicio de skills
 	skillsService = new SkillsService();
+
+	// Inicializar el servicio de instalación
+	installSkillService = new InstallSkillService(skillsService);
 
 	// Inicializar los providers
 	availableSkillsProvider = new AvailableSkillsProvider(skillsService.getAvailableTechnologies(), context.extensionUri);
@@ -111,28 +113,89 @@ function registerCommands(context: vscode.ExtensionContext): void {
 		})
 	);
 
-	const execAsync = promisify(exec);
-
+	// Comando: Instalar un skill individual
 	context.subscriptions.push(
-    vscode.commands.registerCommand('manage-skills.installSkill', async (skillName: string) => {
-        const command = BuildSkillPath(
-            skillName, 
-            DetectAgent(skillsService.getCurrentProjectPath())
-        );
+		vscode.commands.registerCommand('manage-skills.installSkill', async (arg: any) => {
+			// El argumento puede ser un string (skillName) o un SkillItemTreeItem (desde el menú contextual)
+			let skillName: string;
+			
+			if (typeof arg === 'string') {
+				// Caso: llamado desde el botón inline con arguments: [skillName]
+				skillName = arg;
+			} else if (arg && typeof arg === 'object' && arg.skillName) {
+				// Caso: llamado desde el menú contextual, recibe el TreeItem
+				skillName = arg.skillName;
+			} else {
+				vscode.window.showErrorMessage('No se pudo determinar el skill');
+				return;
+			}
 
-        vscode.window.showInformationMessage(`Instalando skill ${skillName}...`);
+			await installSkillService.installSkill(skillName);
+		})
+	);
 
-        try {
-            await execAsync(command, {
-                cwd: skillsService.getCurrentProjectPath()
-            });
-            vscode.window.showInformationMessage(`Skill ${skillName} instalada correctamente`);
-        } catch (error) {
-            vscode.window.showErrorMessage(`Ha ocurrido un error instalando ${skillName}`);
-            console.error(error); // visible en el Output de la extensión
-        }
-    })
-);
+	// Comando: Instalar todos los skills de una tecnología específica
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.installTechSkills', async (arg: any) => {
+			// El argumento puede ser un string (ID) o un TechnologyTreeItem (desde el menú contextual)
+			let technologyId: string;
+			
+			if (typeof arg === 'string') {
+				// Caso: llamado desde el botón inline con arguments: [technology.id]
+				technologyId = arg;
+			} else if (arg && typeof arg === 'object' && arg.technology) {
+				// Caso: llamado desde el menú contextual, recibe el TreeItem
+				technologyId = arg.technology.id;
+			} else {
+				vscode.window.showErrorMessage('No se pudo determinar la tecnología');
+				return;
+			}
+
+			const technology = skillsService.getTechnologyById(technologyId);
+			if (!technology) {
+				vscode.window.showErrorMessage(`Tecnología ${technologyId} no encontrada`);
+				return;
+			}
+
+			const skills = technology.skills || [];
+			if (skills.length === 0) {
+				vscode.window.showWarningMessage(`No hay skills para la tecnología ${technology.name}`);
+				return;
+			}
+
+			await installSkillService.installMultipleSkills(skills, {
+				showProgress: true,
+				stopOnError: false
+			});
+		})
+	);
+
+	// Comando: Instalar todos los skills sugeridos
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.installAllSuggestedSkills', async () => {
+			const detectedTechnologies = suggestedSkillsProvider.getDetectedTechnologies();
+
+			if (detectedTechnologies.length === 0) {
+				vscode.window.showWarningMessage('No hay tecnologías detectadas para instalar skills');
+				return;
+			}
+
+			// Recopilar todos los skills de las tecnologías detectadas
+			const allSkills: string[] = [];
+			detectedTechnologies.forEach(tech => {
+				if (tech.skills && tech.skills.length > 0) {
+					allSkills.push(...tech.skills);
+				}
+			});
+
+			if (allSkills.length === 0) {
+				vscode.window.showWarningMessage('No hay skills sugeridos para instalar');
+				return;
+			}
+
+			await installSkillService.installAllSuggestedSkills(allSkills);
+		})
+	);
 }
 
 /**

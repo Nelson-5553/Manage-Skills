@@ -4,7 +4,14 @@ import { Technology } from '../models/Technology';
 /**
  * Tipo unión para representar cualquier elemento del árbol
  */
-export type TreeElement = TechnologyTreeItem | SkillItemTreeItem;
+export type TreeElement = TechnologyTreeItem | SkillItemTreeItem | HeaderTreeItem;
+
+/**
+ * Interfaz para elementos de cabecera del árbol
+ */
+export interface HeaderTreeItem extends vscode.TreeItem {
+	buttons?: { iconPath: vscode.ThemeIcon | vscode.Uri | { light: vscode.Uri; dark: vscode.Uri }; tooltip?: string | vscode.MarkdownString; command?: string | vscode.Command; arguments?: any[] }[];
+}
 
 /**
  * Provider base para los árboles de tecnologías
@@ -42,12 +49,34 @@ export abstract class BaseSkillTreeProvider implements vscode.TreeDataProvider<T
 	dispose(): void {
 		this._onDidChangeTreeData.dispose();
 	}
+
+	/**
+	 * Ayudante para agregar botones inline a un TreeItem
+	 */
+	protected addInlineButton(
+		item: vscode.TreeItem,
+		iconPath: vscode.ThemeIcon | vscode.Uri,
+		tooltip: string,
+		command: string,
+		args?: any[]
+	): void {
+		const buttons = (item as any).buttons || [];
+		buttons.push({
+			iconPath,
+			tooltip,
+			command,
+			arguments: args || []
+		});
+		(item as any).buttons = buttons;
+	}
 }
 
 /**
  * Elemento personalizado del árbol de tecnologías
  */
 export class TechnologyTreeItem extends vscode.TreeItem {
+	public buttons?: any[];
+
 	constructor(
 		public readonly technology: Technology,
 		extensionUri: vscode.Uri,
@@ -70,9 +99,18 @@ export class TechnologyTreeItem extends vscode.TreeItem {
 			const fallbackUriLight = vscode.Uri.joinPath(extensionUri, "resources/empty-icon-light.svg");
 			const fallbackUriDark = vscode.Uri.joinPath(extensionUri, "resources/empty-icon-dark.svg");
 			this.iconPath = { light: fallbackUriLight, dark: fallbackUriDark };
-		} 
+		}
+		
+		// Agregar inline buttons para la tecnología
+		this.buttons = [
+			{
+				iconPath: new vscode.ThemeIcon('arrow-down'),
+				tooltip: 'Instalar todos los skills de esta tecnología',
+				command: 'manage-skills.installTechSkills',
+				arguments: [technology.id]
+			}
+		];
 	}
-
 
 	private buildTooltip(): string {
 		let tooltip = `${this.technology.name}\n`;
@@ -94,13 +132,6 @@ export class SkillItemTreeItem extends vscode.TreeItem {
 		super(skillName, vscode.TreeItemCollapsibleState.None);
 		this.tooltip = this.buildTooltip();
 		this.contextValue = 'skill-item';
-
-		// Comando para copiar el skill al clipboard
-		this.command = {
-			title: 'Install Skill',
-			command: 'manage-skills.installSkill',
-			arguments: [skillName]
-		};
 	}
 
 	private buildTooltip(): string {

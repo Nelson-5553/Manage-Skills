@@ -42,9 +42,54 @@
       {
         "command": "manage-skills.redetectTechnologies",
         "title": "Refresh Skills"
+      },
+      {
+        "command": "manage-skills.installSkill",
+        "title": "Install Skill",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "manage-skills.installTechSkills",
+        "title": "Install Technology Skills",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "manage-skills.installAllSuggestedSkills",
+        "title": "Install All Suggested Skills",
+        "icon": "$(layers)"
+      },
+      {
+        "command": "manage-skills.markTechnologyInstalled",
+        "title": "Mark Technology as Installed"
+      },
+      {
+        "command": "manage-skills.markTechnologyNotInstalled",
+        "title": "Mark Technology as Not Installed"
+      },
+      {
+        "command": "manage-skills.copySkillPath",
+        "title": "Copy Skill Path"
       }
-    ]
-
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "manage-skills.installTechSkills",
+          "when": "viewItem == available-technology || viewItem == installed-technology",
+          "group": "inline@1"
+        },
+        {
+          "command": "manage-skills.installAllSuggestedSkills",
+          "when": "viewItem == suggested-skills-header",
+          "group": "inline@1"
+        },
+        {
+          "command": "manage-skills.installSkill",
+          "when": "viewItem == skill-item",
+          "group": "inline@1"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

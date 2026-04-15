@@ -1,7 +1,30 @@
 import * as vscode from 'vscode';
-import { BaseSkillTreeProvider, TechnologyTreeItem, SkillItemTreeItem, TreeElement } from './BaseSkillTreeProvider';
+import { BaseSkillTreeProvider, TechnologyTreeItem, SkillItemTreeItem, TreeElement, HeaderTreeItem } from './BaseSkillTreeProvider';
 import { Technology } from '../models/Technology';
 import { DetectionService } from '../services/DetectionService';
+
+/**
+ * Elemento de cabecera para el árbol de skills sugeridos
+ */
+class SuggestedSkillsHeaderItem extends vscode.TreeItem implements HeaderTreeItem {
+	public buttons?: any[];
+
+	constructor(suggestedCount: number) {
+		super('Suggested Skills', vscode.TreeItemCollapsibleState.Expanded);
+		this.description = `${suggestedCount} tecnología(s) detectada(s)`;
+		this.contextValue = 'suggested-skills-header';
+
+		// Agregar inline button a la cabecera
+		this.buttons = [
+			{
+				iconPath: new vscode.ThemeIcon('arrow-down'),
+				tooltip: 'Instalar todos los skills sugeridos',
+				command: 'manage-skills.installAllSuggestedSkills',
+				arguments: []
+			}
+		];
+	}
+}
 
 /**
  * Provider para mostrar las tecnologías sugeridas detectadas en el workspace
@@ -57,9 +80,16 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 
 	getChildren(element?: TreeElement): Thenable<TreeElement[]> {
         if (!element) {
+            // Mostrar la cabecera como primer elemento
+            const headerItem = new SuggestedSkillsHeaderItem(this.detectedTechnologies.length) as unknown as TreeElement;
+            return Promise.resolve([headerItem]);
+        }
+
+        // Si el elemento es la cabecera, retornar las tecnologías detectadas
+        if (element instanceof SuggestedSkillsHeaderItem) {
             return Promise.resolve(
                 this.detectedTechnologies.map(tech => 
-                    new TechnologyTreeItem(tech, this.extensionUri) // ← añadir this.extensionUri
+                    new TechnologyTreeItem(tech, this.extensionUri) as unknown as TreeElement
                 )
             );
         }
@@ -67,7 +97,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 		// Si el elemento es una tecnología, retornamos sus skills
 		if (element instanceof TechnologyTreeItem) {
 			const skillItems = element.technology.skills.map(
-				skill => new SkillItemTreeItem(skill, element.technology.id)
+				skill => new SkillItemTreeItem(skill, element.technology.id) as unknown as TreeElement
 			);
 			return Promise.resolve(skillItems);
 		}

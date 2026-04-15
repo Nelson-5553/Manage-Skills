@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 import { SkillsService, BuildSkillPath } from './services/SkillsService';
 import { DetectAgent } from './services/DetectionService';
 import { AvailableSkillsProvider } from './providers/AvailableSkillsProvider';
@@ -109,16 +111,26 @@ function registerCommands(context: vscode.ExtensionContext): void {
 		})
 	);
 
+	const execAsync = promisify(exec);
+
 	context.subscriptions.push(
     vscode.commands.registerCommand('manage-skills.installSkill', async (skillName: string) => {
-        const task = new vscode.Task(
-            { type: 'shell' },
-            vscode.TaskScope.Workspace,
-            `Add skill ${skillName}`,
-            'skills',
-            new vscode.ShellExecution(BuildSkillPath(skillName, DetectAgent(skillsService.getCurrentProjectPath())))
+        const command = BuildSkillPath(
+            skillName, 
+            DetectAgent(skillsService.getCurrentProjectPath())
         );
-        await vscode.tasks.executeTask(task);
+
+        vscode.window.showInformationMessage(`Instalando skill ${skillName}...`);
+
+        try {
+            await execAsync(command, {
+                cwd: skillsService.getCurrentProjectPath()
+            });
+            vscode.window.showInformationMessage(`Skill ${skillName} instalada correctamente`);
+        } catch (error) {
+            vscode.window.showErrorMessage(`Ha ocurrido un error instalando ${skillName}`);
+            console.error(error); // visible en el Output de la extensión
+        }
     })
 );
 }

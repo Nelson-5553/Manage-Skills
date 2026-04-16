@@ -36,8 +36,9 @@
     },
     "commands": [
       {
-        "command": "manage-skills.helloWorld",
-        "title": "Hello World"
+        "command": "manage-skills.openDocs",
+        "title": "View Skills Details",
+        "icon": "$(book)"
       },
       {
         "command": "manage-skills.redetectTechnologies",
@@ -87,7 +88,13 @@
           "command": "manage-skills.installSkill",
           "when": "viewItem == skill-item",
           "group": "inline@1"
+        },
+        {
+          "command": "manage-skills.openDocs",
+          "when": "viewItem == skill-item",
+          "group": "inline@1"
         }
+
       ]
     }
   },

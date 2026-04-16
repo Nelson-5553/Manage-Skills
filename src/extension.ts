@@ -67,12 +67,13 @@ function detectWorkspaceTechnologies(): void {
  * Registra todos los comandos de la extensión
  */
 function registerCommands(context: vscode.ExtensionContext): void {
-	// Comando: Hello World
 	context.subscriptions.push(
-		vscode.commands.registerCommand('manage-skills.helloWorld', () => {
-			vscode.window.showInformationMessage('Hello World desde manage-skills!');
-		})
-	);
+	vscode.commands.registerCommand('manage-skills.openDocs', (skillName: string) => {
+		
+		const url = vscode.Uri.parse(`https://skills.sh/${skillName}`);
+		vscode.env.openExternal(url);
+	})
+);
 
 	// Comando: Marcar tecnología como instalada
 	context.subscriptions.push(

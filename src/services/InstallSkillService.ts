@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import { promisify } from 'util';
 import { exec } from 'child_process';
-import { BuildSkillPath, SkillsService } from './SkillsService';
-import { DetectAgent } from './DetectionService';
+import { SkillsService } from './SkillsService';
+import { SkillCommandBuilder } from './SkillCommandBuilder';
+import { AgentDetector } from './AgentDetector';
 
 const execAsync = promisify(exec);
 
@@ -26,7 +27,13 @@ type NotificationType = 'info' | 'warning' | 'error';
  * Soporta diferentes tipos de instalación: individual, todas las tech skills, y todas las sugeridas
  */
 export class InstallSkillService {
-	constructor(private skillsService: SkillsService) { }
+	private skillCommandBuilder: SkillCommandBuilder;
+	private agentDetector: AgentDetector;
+
+	constructor(private skillsService: SkillsService) {
+		this.skillCommandBuilder = new SkillCommandBuilder();
+		this.agentDetector = new AgentDetector();
+	}
 
 	/**
 	 * Wrapper que ejecuta una operación con progress bar y muestra un único mensaje final
@@ -80,13 +87,12 @@ export class InstallSkillService {
 	 */
 	private async installSkillSilent(skillName: string): Promise<InstallResult> {
 		try {
-			const command = BuildSkillPath(
-				skillName,
-				DetectAgent(this.skillsService.getCurrentProjectPath())
-			);
+			const projectPath = this.skillsService.getCurrentProjectPath();
+			const agent = this.agentDetector.detect(projectPath);
+			const command = this.skillCommandBuilder.buildInstallCommand(skillName, agent);
 
 			await execAsync(command, {
-				cwd: this.skillsService.getCurrentProjectPath()
+				cwd: projectPath
 			});
 
 			return {
@@ -112,17 +118,16 @@ export class InstallSkillService {
 	 */
 	async installSkill(skillName: string): Promise<InstallResult> {
 		try {
-			const command = BuildSkillPath(
-				skillName,
-				DetectAgent(this.skillsService.getCurrentProjectPath())
-			);
+			const projectPath = this.skillsService.getCurrentProjectPath();
+			const agent = this.agentDetector.detect(projectPath);
+			const command = this.skillCommandBuilder.buildInstallCommand(skillName, agent);
 
 			await this.withProgressNotification(
 				`Installing "${skillName}"...`,
 				async (progress) => {
 					progress.report({ message: 'Running installation...' });
 					await execAsync(command, {
-						cwd: this.skillsService.getCurrentProjectPath()
+						cwd: projectPath
 					});
 					progress.report({ message: 'Completed' });
 					

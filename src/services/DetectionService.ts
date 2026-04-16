@@ -1,21 +1,17 @@
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { AGENT_FOLDER_MAP, SKILLS_MAP, Technology } from '../config/skills-map';
+import { SKILLS_MAP, Technology } from '../config/skills-map';
+import { AgentDetector } from './AgentDetector';
 
-
+// Re-export para compatibilidad con código existente
+const agentDetector = new AgentDetector();
 
 /**
- * Servicio para detectar tecnologías instaladas en un proyecto
+ * @deprecated Usa AgentDetector.detect() en su lugar
+ * Mantenido para compatibilidad con código existente
  */
 export function DetectAgent(workspacePath: string): string | undefined {
-    for (const [folder, agent] of Object.entries(AGENT_FOLDER_MAP)) {
-        const folderPath = path.join(workspacePath, folder);
-        if (fs.existsSync(folderPath)) {
-            return agent;
-        }
-    }
-    return "universal";
+	return agentDetector.detect(workspacePath);
 }
 	
 export class DetectionService {
@@ -85,54 +81,61 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica si los paquetes especificados existen en package.json
+	 * Lee y parsea el archivo package.json del proyecto
+	 * @private
+	 * @throws No lanza excepción, retorna null si hay error
 	 */
-	private static checkPackages(projectPath: string, packages: string[]): boolean {
+	private static readPackageJson(projectPath: string): Record<string, any> | null {
 		try {
 			const packageJsonPath = path.join(projectPath, 'package.json');
 			if (!fs.existsSync(packageJsonPath)) {
-				return false;
+				return null;
 			}
 
 			const content = fs.readFileSync(packageJsonPath, 'utf-8');
-			const packageJson = JSON.parse(content);
+			return JSON.parse(content);
+		} catch (error) {
+			return null;
+		}
+	}
 
-			const allDeps = {
-				...packageJson.dependencies,
-				...packageJson.devDependencies,
-				...packageJson.peerDependencies,
-			};
+	/**
+	 * Obtiene todas las dependencias de un package.json parseado
+	 * @private
+	 */
+	private static getAllDependencies(packageJson: Record<string, any>): Record<string, any> {
+		return {
+			...packageJson.dependencies,
+			...packageJson.devDependencies,
+			...packageJson.peerDependencies,
+		};
+	}
 
-			return packages.some(pkg => allDeps.hasOwnProperty(pkg));
-		} catch {
+	/**
+	 * Verifica si los paquetes especificados existen en package.json
+	 */
+	private static checkPackages(projectPath: string, packages: string[]): boolean {
+		const packageJson = this.readPackageJson(projectPath);
+		if (!packageJson) {
 			return false;
 		}
+
+		const allDeps = this.getAllDependencies(packageJson);
+		return packages.some(pkg => allDeps.hasOwnProperty(pkg));
 	}
 
 	/**
 	 * Verifica si hay paquetes que coincidan con los patrones especificados
 	 */
 	private static checkPackagePatterns(projectPath: string, patterns: RegExp[]): boolean {
-		try {
-			const packageJsonPath = path.join(projectPath, 'package.json');
-			if (!fs.existsSync(packageJsonPath)) {
-				return false;
-			}
-
-			const content = fs.readFileSync(packageJsonPath, 'utf-8');
-			const packageJson = JSON.parse(content);
-
-			const allDeps = {
-				...packageJson.dependencies,
-				...packageJson.devDependencies,
-				...packageJson.peerDependencies,
-			};
-
-			const packageNames = Object.keys(allDeps);
-			return patterns.some(pattern => packageNames.some(name => pattern.test(name)));
-		} catch {
+		const packageJson = this.readPackageJson(projectPath);
+		if (!packageJson) {
 			return false;
 		}
+
+		const allDeps = this.getAllDependencies(packageJson);
+		const packageNames = Object.keys(allDeps);
+		return patterns.some(pattern => packageNames.some(name => pattern.test(name)));
 	}
 
 	/**

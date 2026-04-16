@@ -2,29 +2,15 @@ import * as vscode from 'vscode';
 import { SKILLS_MAP } from '../config/skills-map';
 import { Technology } from '../models/Technology';
 import { DetectionService } from './DetectionService';
+import { SkillCommandBuilder } from './SkillCommandBuilder';
 
 /**
- * Servicio central para la gestión de tecnologías y skills
- * Gestiona la detección de tecnologías en el proyecto y sus skills asociados
+ * @deprecated Usa SkillCommandBuilder.buildInstallCommand() en su lugar
+ * Mantenido para compatibilidad con código existente
  */
-
 export function BuildSkillPath(skillName: string, agent: string = "universal"): string {
-    const elements = skillName.split('/');
-    
-    let repo: string;
-    let skill: string;
-    
-    if (elements.length === 2) {
-        // Special case: two-part skill path (no owner)
-        repo = elements[0];
-        skill = elements[1];
-    } else {
-        // Normal case: owner/repo/skill/path
-        repo = elements.slice(0, 2).join("/");
-        skill = elements.slice(2).join("/");
-    }
-
-    return "npx -y skills add " + repo + " --skill " + skill + " -a " + agent + " -y";
+	const builder = new SkillCommandBuilder();
+	return builder.buildInstallCommand(skillName, agent);
 }
 
 export class SkillsService {
@@ -52,8 +38,13 @@ export class SkillsService {
 
 	/**
 	 * Detecta tecnologías en un proyecto
+	 * @throws Error si projectPath es inválido o vacío
 	 */
 	detectTechnologies(projectPath: string): void {
+		if (!projectPath || typeof projectPath !== 'string') {
+			throw new Error('Invalid projectPath: must be a non-empty string');
+		}
+
 		this.projectPath = projectPath;
 		const detectedTechs = DetectionService.detectTechnologies(projectPath);
 
@@ -91,15 +82,25 @@ export class SkillsService {
 
 	/**
 	 * Obtiene una tecnología específica por su ID
+	 * @throws Error si ID es inválido
 	 */
 	getTechnologyById(id: string): Technology | undefined {
+		if (!id || typeof id !== 'string') {
+			throw new Error('Invalid technology ID: must be a non-empty string');
+		}
+
 		return this.technologies.get(id);
 	}
 
 	/**
 	 * Obtiene los skills de una tecnología
+	 * @throws Error si ID es inválido
 	 */
 	getTechnologySkills(technologyId: string): string[] {
+		if (!technologyId || typeof technologyId !== 'string') {
+			throw new Error('Invalid technology ID: must be a non-empty string');
+		}
+
 		return this.technologies.get(technologyId)?.skills || [];
 	}
 

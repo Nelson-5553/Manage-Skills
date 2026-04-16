@@ -864,18 +864,9 @@ export const SKILLS_MAP: Technology[] = [
     },
     skills: [],
     icon: "resources/icons/postgresql.svg"
-  },
-  {
-    id: "python",
-    name: "Python",
-    detect: {
-      configFiles: ["pyproject.toml", "requirements.txt", "setup.py", "setup.cfg", "Pipfile"],
-    },
-    skills: [],
-    icon: "resources/icons/python.svg"
-  },
-  {
-    id: "sorbet",
+   },
+   {
+     id: "sorbet",
     name: "Sorbet",
     detect: {
       gems: ["sorbet", "sorbet-runtime"],
@@ -893,42 +884,17 @@ export const SKILLS_MAP: Technology[] = [
       gems: ["activeadmin"],
     },
     skills: [],
-  },
-  {
-    id: "django",
-    name: "Django",
-    detect: {
-      configFiles: ["manage.py"],
-      configFileContent: {
-        files: ["pyproject.toml", "requirements.txt", "setup.py", "setup.cfg", "Pipfile"],
-        patterns: ["django", "Django"],
-      },
-    },
-    skills: [],
-    icon: "resources/icons/django.svg"
-  },
-  {
-    id: "devise",
+   },
+   {
+     id: "devise",
     name: "Devise",
     detect: {
       gems: ["devise"],
     },
     skills: [],
-    icon: "resources/icons/devise.svg"
-  },
-  {
-    id: "fastapi",
-    name: "FastAPI",
-    detect: {
-      configFileContent: {
-        files: ["pyproject.toml", "requirements.txt", "setup.py", "setup.cfg", "Pipfile"],
-        patterns: ["fastapi", "FastAPI"],
-      },
-    },
-    skills: [],
-    icon: "resources/icons/fastapi.svg"
-  },
-  {
+     icon: "resources/icons/devise.svg"
+   },
+   {
     id: "sidekiq",
     name: "Sidekiq",
     detect: {
@@ -982,21 +948,9 @@ export const SKILLS_MAP: Technology[] = [
       "jeffallan/claude-skills/laravel-specialist",
       "affaan-m/everything-claude-code/laravel-patterns",
     ],
-    icon: "resources/icons/laravel.svg"
-  },
-  {
-    id: "flask",
-    name: "Flask",
-    detect: {
-      configFileContent: {
-        files: ["pyproject.toml", "requirements.txt", "setup.py", "setup.cfg", "Pipfile"],
-        patterns: ["flask", "Flask"],
-      },
-    },
-    skills: [],
-    icon: "resources/icons/flask-dark.svg"
-  },
-  {
+     icon: "resources/icons/laravel.svg"
+   },
+   {
     id: "python",
     name: "Python",
     detect: {

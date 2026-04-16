@@ -11,11 +11,20 @@ import { DetectionService } from './DetectionService';
 export function BuildSkillPath(skillName: string, agent: string = "universal"): string {
     const elements = skillName.split('/');
     
-    const repo = elements.slice(0, 2).join("/");
-    const skill = elements.slice(2).join("/");
+    let repo: string;
+    let skill: string;
+    
+    if (elements.length === 2) {
+        // Special case: two-part skill path (no owner)
+        repo = elements[0];
+        skill = elements[1];
+    } else {
+        // Normal case: owner/repo/skill/path
+        repo = elements.slice(0, 2).join("/");
+        skill = elements.slice(2).join("/");
+    }
 
     return "npx -y skills add " + repo + " --skill " + skill + " -a " + agent + " -y";
-    
 }
 
 export class SkillsService {

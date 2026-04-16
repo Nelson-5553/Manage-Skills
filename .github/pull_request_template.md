@@ -17,14 +17,6 @@ Fixes #<!-- issue number -->
 - 
 - 
 
-## Testing Done
-<!-- Describe the tests you ran -->
-
-- [ ] Unit tests pass
-- [ ] Integration tests pass
-- [ ] Manual testing in VS Code
-- [ ] No new warnings/errors
-
 ## Checklist
 - [ ] Code follows project style guidelines
 - [ ] TypeScript compiles without errors

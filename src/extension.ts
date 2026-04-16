@@ -66,44 +66,33 @@ function detectWorkspaceTechnologies(): void {
 /**
  * Registra todos los comandos de la extensión
  */
+
+// Comando: Abrir documentación de un skill
+
 function registerCommands(context: vscode.ExtensionContext): void {
 	context.subscriptions.push(
-	vscode.commands.registerCommand('manage-skills.openDocs', (skillName: string) => {
-		
-		const url = vscode.Uri.parse(`https://skills.sh/${skillName}`);
-		vscode.env.openExternal(url);
-	})
+	vscode.commands.registerCommand('manage-skills.openDocs', async (arg: any) => {
+	let skillName: string;
+	
+	if (typeof arg === 'string') {
+		skillName = arg;
+	} else if (arg && typeof arg === 'object' && arg.skillName) {
+		skillName = arg.skillName;
+	} else {
+		vscode.window.showErrorMessage('No se pudo determinar el skill');
+		return;
+	}
+	
+	const url = vscode.Uri.parse(`https://skills.sh/${skillName}`);
+	vscode.env.openExternal(url);
+})
 );
-
-	// Comando: Marcar tecnología como instalada
-	context.subscriptions.push(
-		vscode.commands.registerCommand('manage-skills.markTechnologyInstalled', (technologyId: string) => {
-			skillsService.markTechnologyInstalled(technologyId);
-			vscode.window.showInformationMessage(`Tecnología ${technologyId} marcada como instalada`);
-		})
-	);
-
-	// Comando: Marcar tecnología como no instalada
-	context.subscriptions.push(
-		vscode.commands.registerCommand('manage-skills.markTechnologyNotInstalled', (technologyId: string) => {
-			skillsService.markTechnologyNotInstalled(technologyId);
-			vscode.window.showInformationMessage(`Tecnología ${technologyId} marcada como no instalada`);
-		})
-	);
 
 	// Comando: Redetectar tecnologías
 	context.subscriptions.push(
 		vscode.commands.registerCommand('manage-skills.redetectTechnologies', () => {
 			detectWorkspaceTechnologies();
 			vscode.window.showInformationMessage('Tecnologías redetectadas');
-		})
-	);
-
-	// Comando: Copiar skill path al clipboard
-	context.subscriptions.push(
-		vscode.commands.registerCommand('manage-skills.copySkillPath', async (skillPath: string) => {
-			await vscode.env.clipboard.writeText(skillPath);
-			vscode.window.showInformationMessage(`✓ Skill copiado: ${skillPath}`);
 		})
 	);
 

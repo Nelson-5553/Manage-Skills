@@ -1,0 +1,72 @@
+name: Add Technology
+description: Add support for a new technology
+title: "[TECH] Add support for "
+labels: ["tech-addition"]
+
+body:
+  - type: input
+    id: tech_name
+    attributes:
+      label: Technology Name
+      placeholder: e.g., Django
+    validations:
+      required: true
+
+  - type: input
+    id: package_manager
+    attributes:
+      label: Package Manager
+      placeholder: npm, pip, gem, gradle, etc.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: detection_method
+    attributes:
+      label: Detection Method
+      options:
+        - label: packages (npm/yarn packages)
+        - label: packagePatterns (regex patterns)
+        - label: configFiles (config file names)
+        - label: gems (Ruby gems)
+        - label: configFileContent (search in files)
+    validations:
+      required: true
+
+  - type: textarea
+    id: detection_config
+    attributes:
+      label: Detection Configuration
+      description: Provide the detection configuration
+      placeholder: |
+        detect: {
+          // Your detection config
+        }
+    validations:
+      required: true
+
+  - type: textarea
+    id: skills
+    attributes:
+      label: Available Skills
+      description: Skills from skills.sh that should be suggested
+      placeholder: |
+        https://skills.sh
+        https://skills.sh
+
+  - type: input
+    id: icon
+    attributes:
+      label: Icon (optional)
+      placeholder: Link to SVG icon
+
+  - type: textarea
+    id: example_project
+    attributes:
+      label: Example Project
+      placeholder: Reference projects that use this technology
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes

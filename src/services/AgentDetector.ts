@@ -4,7 +4,6 @@ import { AGENT_FOLDER_MAP } from '../config/skills-map';
 
 /**
  * Service to detect the AI agent in the workspace
- * Identifies which AI agent is being used (OpenCode, Claude, etc.)
  */
 export class AgentDetector {
 	/**

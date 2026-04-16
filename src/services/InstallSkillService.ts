@@ -8,7 +8,7 @@ import { AgentDetector } from './AgentDetector';
 const execAsync = promisify(exec);
 
 /**
- * Resultado de la instalación de un skill
+ * Result of skill installation
  */
 export interface InstallResult {
 	success: boolean;
@@ -18,13 +18,13 @@ export interface InstallResult {
 }
 
 /**
- * Tipo de notificación final
+ * Type of final notification
  */
 type NotificationType = 'info' | 'warning' | 'error';
 
 /**
- * Servicio para manejar la instalación de skills
- * Soporta diferentes tipos de instalación: individual, todas las tech skills, y todas las sugeridas
+ * Service to handle skill installation
+ * Supports different installation types: individual, all tech skills, and all suggested
  */
 export class InstallSkillService {
 	private skillCommandBuilder: SkillCommandBuilder;
@@ -36,9 +36,9 @@ export class InstallSkillService {
 	}
 
 	/**
-	 * Wrapper que ejecuta una operación con progress bar y muestra un único mensaje final
-	 * La operación retorna { results, finalNotification }
-	 * Evita bombardear al usuario con múltiples notificaciones
+	 * Wrapper that executes an operation with progress bar and shows a single final message
+	 * The operation returns { results, finalNotification }
+	 * Avoids bombarding the user with multiple notifications
 	 */
 	private async withProgressNotification<T>(
 		title: string,
@@ -59,7 +59,7 @@ export class InstallSkillService {
 			operation
 		);
 
-		// Mostrar única notificación final si se especifica
+		// Show single final notification if specified
 		if (finalNotification) {
 			switch (finalNotification.type) {
 				case 'info':
@@ -82,8 +82,8 @@ export class InstallSkillService {
 	}
 
 	/**
-	 * Versión silenciosa de instalación para uso interno
-	 * Solo ejecuta la instalación sin mostrar notificaciones
+	 * Silent version of installation for internal use
+	 * Only runs the installation without showing notifications
 	 */
 	private async installSkillSilent(skillName: string): Promise<InstallResult> {
 		try {
@@ -114,7 +114,7 @@ export class InstallSkillService {
 	}
 
 	/**
-	 * Instala un skill individual
+	 * Installs a single skill
 	 */
 	async installSkill(skillName: string): Promise<InstallResult> {
 		try {
@@ -174,18 +174,18 @@ export class InstallSkillService {
 		}
 	}
 	/**
-	 * Instala todos los skills técnicos de las tecnologías detectadas
+	 * Installs all technical skills of detected technologies
 	 */
 	async installAllTechSkills(): Promise<InstallResult[]> {
 		const installedTechs = this.skillsService.getInstalledTechnologies();
 		const results: InstallResult[] = [];
 
 		if (installedTechs.length === 0) {
-			vscode.window.showWarningMessage('No hay tecnologías detectadas en el proyecto');
+			vscode.window.showWarningMessage('No technologies detected in the project');
 			return results;
 		}
 
-		// Obtener todos los skills de las tecnologías instaladas
+		// Get all skills of installed technologies
 		const skillsToInstall: string[] = [];
 		installedTechs.forEach(tech => {
 			if (tech.skills && tech.skills.length > 0) {
@@ -194,7 +194,7 @@ export class InstallSkillService {
 		});
 
 		if (skillsToInstall.length === 0) {
-			vscode.window.showWarningMessage('No hay skills técnicos para instalar');
+			vscode.window.showWarningMessage('No technical skills to install');
 			return results;
 		}
 
@@ -204,7 +204,7 @@ export class InstallSkillService {
 				async (progress) => {
 					const progressIncrement = 100 / skillsToInstall.length;
 
-					// Instalar cada skill silenciosamente
+				// Install each skill silently
 					for (const skill of skillsToInstall) {
 						const result = await this.installSkillSilent(skill);
 						results.push(result);
@@ -223,7 +223,7 @@ export class InstallSkillService {
 
 			return installResults;
 		} catch (error) {
-			const message = 'Error al instalar todos los skills técnicos';
+			const message = 'Error installing all technical skills';
 			console.error(error);
 
 			vscode.window.showErrorMessage(message);
@@ -240,14 +240,14 @@ export class InstallSkillService {
 	}
 
 	/**
-	 * Instala todos los skills sugeridos
-	 * Los skills sugeridos pueden venir de una lista predefinida o de una configuración
+	 * Installs all suggested skills
+	 * Suggested skills can come from a predefined list or configuration
 	 */
 	async installAllSuggestedSkills(suggestedSkills: string[]): Promise<InstallResult[]> {
 		const results: InstallResult[] = [];
 
 		if (suggestedSkills.length === 0) {
-			vscode.window.showWarningMessage('No hay skills sugeridos para instalar');
+			vscode.window.showWarningMessage('No suggested skills to install');
 			return results;
 		}
 
@@ -257,7 +257,7 @@ export class InstallSkillService {
 				async (progress) => {
 					const progressIncrement = 100 / suggestedSkills.length;
 
-					// Instalar cada skill sugerido silenciosamente
+				// Install each suggested skill silently
 					for (const skill of suggestedSkills) {
 						const result = await this.installSkillSilent(skill);
 						results.push(result);
@@ -276,7 +276,7 @@ export class InstallSkillService {
 
 			return installResults;
 		} catch (error) {
-			const message = 'Error al instalar los skills sugeridos';
+			const message = 'Error installing suggested skills';
 			console.error(error);
 
 			vscode.window.showErrorMessage(message);
@@ -293,7 +293,7 @@ export class InstallSkillService {
 	}
 
 	/**
-	 * Instala múltiples skills de forma secuencial con control de progreso
+	 * Installs multiple skills sequentially with progress control
 	 */
 	async installMultipleSkills(
 		skills: string[],
@@ -357,7 +357,7 @@ export class InstallSkillService {
 	}
 
 	/**
-	 * Obtiene el estado de la última instalación
+	 * Calculates installation summary statistics
 	 */
 	getInstallationSummary(results: InstallResult[]): {
 		totalSkills: number;
@@ -379,7 +379,7 @@ export class InstallSkillService {
 	}
 
 	/**
-	 * Genera mensaje de resumen de instalación
+	 * Generates a user-friendly installation summary message based on results
 	 */
 	private getInstallationSummaryMessage(results: InstallResult[]): string {
 		const { successCount, failCount, totalSkills } = this.getInstallationSummary(results);

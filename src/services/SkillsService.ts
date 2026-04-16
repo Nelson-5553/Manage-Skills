@@ -5,8 +5,8 @@ import { DetectionService } from './DetectionService';
 import { SkillCommandBuilder } from './SkillCommandBuilder';
 
 /**
- * @deprecated Usa SkillCommandBuilder.buildInstallCommand() en su lugar
- * Mantenido para compatibilidad con código existente
+ * @deprecated Use SkillCommandBuilder.buildInstallCommand() instead
+ * Maintained for backward compatibility
  */
 export function BuildSkillPath(skillName: string, agent: string = "universal"): string {
 	const builder = new SkillCommandBuilder();
@@ -25,7 +25,7 @@ export class SkillsService {
 	}
 
 	/**
-	 * Inicializa todas las tecnologías del mapa
+	 * Initializes all technologies from the map
 	 */
 	private initializeTechnologies(): void {
 		SKILLS_MAP.forEach(tech => {
@@ -37,8 +37,8 @@ export class SkillsService {
 	}
 
 	/**
-	 * Detecta tecnologías en un proyecto
-	 * @throws Error si projectPath es inválido o vacío
+	 * Detects technologies in a project
+	 * @throws Error if projectPath is invalid or empty
 	 */
 	detectTechnologies(projectPath: string): void {
 		if (!projectPath || typeof projectPath !== 'string') {
@@ -48,7 +48,7 @@ export class SkillsService {
 		this.projectPath = projectPath;
 		const detectedTechs = DetectionService.detectTechnologies(projectPath);
 
-		// Marcar detectadas como instaladas
+		// Mark detected ones as installed
 		this.technologies.forEach(tech => {
 			tech.installed = detectedTechs.some(dt => dt.id === tech.id);
 			if (tech.installed) {
@@ -60,29 +60,29 @@ export class SkillsService {
 	}
 
 	/**
-	 * Obtiene todas las tecnologías
+	 * Gets all technologies
 	 */
 	getAllTechnologies(): Technology[] {
 		return Array.from(this.technologies.values());
 	}
 
 	/**
-	 * Obtiene solo las tecnologías instaladas
+	 * Gets only installed technologies
 	 */
 	getInstalledTechnologies(): Technology[] {
 		return this.getAllTechnologies().filter(tech => tech.installed);
 	}
 
 	/**
-	 * Obtiene solo las tecnologías disponibles (no instaladas)
+	 * Gets only available technologies (not installed)
 	 */
 	getAvailableTechnologies(): Technology[] {
 		return this.getAllTechnologies().filter(tech => !tech.installed);
 	}
 
 	/**
-	 * Obtiene una tecnología específica por su ID
-	 * @throws Error si ID es inválido
+	 * Gets a specific technology by its ID
+	 * @throws Error if ID is invalid
 	 */
 	getTechnologyById(id: string): Technology | undefined {
 		if (!id || typeof id !== 'string') {
@@ -93,8 +93,8 @@ export class SkillsService {
 	}
 
 	/**
-	 * Obtiene los skills de una tecnología
-	 * @throws Error si ID es inválido
+	 * Gets the skills of a technology
+	 * @throws Error if ID is invalid
 	 */
 	getTechnologySkills(technologyId: string): string[] {
 		if (!technologyId || typeof technologyId !== 'string') {
@@ -105,7 +105,7 @@ export class SkillsService {
 	}
 
 	/**
-	 * Marca una tecnología como instalada
+	 * Marks a technology as installed
 	 */
 	markTechnologyInstalled(technologyId: string): boolean {
 		const tech = this.technologies.get(technologyId);
@@ -120,7 +120,7 @@ export class SkillsService {
 	}
 
 	/**
-	 * Marca una tecnología como no instalada
+	 * Marks a technology as not installed
 	 */
 	markTechnologyNotInstalled(technologyId: string): boolean {
 		const tech = this.technologies.get(technologyId);
@@ -135,7 +135,7 @@ export class SkillsService {
 	}
 
 	/**
-	 * Busca tecnologías por nombre
+	 * Searches technologies by name
 	 */
 	searchTechnologies(query: string): Technology[] {
 		const lowerQuery = query.toLowerCase();
@@ -146,28 +146,28 @@ export class SkillsService {
 	}
 
 	/**
-	 * Filtra tecnologías que tengan skills asociados
+	 * Filters technologies that have associated skills
 	 */
 	getTechnologiesWithSkills(): Technology[] {
 		return this.getAllTechnologies().filter(tech => tech.skills && tech.skills.length > 0);
 	}
 
 	/**
-	 * Obtiene el proyecto actual
+	 * Gets the current project path
 	 */
 	getCurrentProjectPath(): string {
 		return this.projectPath;
 	}
 
 	/**
-	 * Notifica cambios en las tecnologías
+	 * Notifies changes in technologies
 	 */
 	private notifyTechnologiesChanged(): void {
 		this.onTechnologiesChangedEmitter.fire(this.getAllTechnologies());
 	}
 
 	/**
-	 * Limpia los recursos del servicio
+	 * Cleans up service resources
 	 */
 	dispose(): void {
 		this.onTechnologiesChangedEmitter.dispose();

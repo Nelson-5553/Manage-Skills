@@ -1,14 +1,14 @@
 /**
- * Servicio para construir comandos de instalación de skills
- * Encapsula la lógica de construcción de rutas de skills y comandos
+ * Service to build skill installation commands
+ * Encapsulates the logic for building skill paths and commands
  */
 export class SkillCommandBuilder {
 	/**
-	 * Construye el comando de instalación para un skill
+	 * Builds the installation command for a skill
 	 * 
-	 * @param skillName - Ruta del skill (ej: "vercel-labs/agent-skills/react-best-practices")
-	 * @param agent - ID del agente (ej: "opencode", "claude", o "universal" por defecto)
-	 * @returns Comando npm para instalar el skill
+	 * @param skillName - Skill path (e.g., "vercel-labs/agent-skills/react-best-practices")
+	 * @param agent - Agent ID (e.g., "opencode", "claude", or "universal" by default)
+	 * @returns npm command to install the skill
 	 * 
 	 * @example
 	 * ```typescript
@@ -46,10 +46,10 @@ export class SkillCommandBuilder {
 	}
 
 	/**
-	 * Valida si una ruta de skill es válida
+	 * Validates if a skill path is valid
 	 * 
-	 * @param skillName - Ruta del skill a validar
-	 * @returns true si la ruta es válida, false en caso contrario
+	 * @param skillName - Skill path to validate
+	 * @returns true if the path is valid, false otherwise
 	 */
 	isValidSkillPath(skillName: string): boolean {
 		if (!skillName || typeof skillName !== 'string') {
@@ -57,12 +57,12 @@ export class SkillCommandBuilder {
 		}
 
 		const parts = skillName.split('/');
-		// Debe tener al menos 2 partes: repo/skill o owner/repo/skill
+		// Must have at least 2 parts: repo/skill or owner/repo/skill
 		return parts.length >= 2 && parts.every(part => part.length > 0);
 	}
 
 	/**
-	 * Extrae el nombre legible del skill
+	 * Extracts the human-readable skill name
 	 * 
 	 * @example
 	 * ```typescript
@@ -76,7 +76,7 @@ export class SkillCommandBuilder {
 	}
 
 	/**
-	 * Extrae el owner/repo del skill
+	 * Extracts the owner/repo of the skill
 	 * 
 	 * @example
 	 * ```typescript

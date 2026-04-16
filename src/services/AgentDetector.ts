@@ -3,15 +3,15 @@ import * as path from 'path';
 import { AGENT_FOLDER_MAP } from '../config/skills-map';
 
 /**
- * Servicio para detectar el agente IA en el workspace
- * Identifica qué agente IA está siendo utilizado (OpenCode, Claude, etc.)
+ * Service to detect the AI agent in the workspace
+ * Identifies which AI agent is being used (OpenCode, Claude, etc.)
  */
 export class AgentDetector {
 	/**
-	 * Detecta el agente IA basado en la estructura de carpetas del workspace
+	 * Detects the AI agent based on the workspace folder structure
 	 * 
-	 * @param workspacePath - Ruta del workspace
-	 * @returns ID del agente detectado, o "universal" si no se encuentra ninguno específico
+	 * @param workspacePath - Workspace path
+	 * @returns ID of the detected agent, or "universal" if none is found
 	 * 
 	 * @example
 	 * ```typescript
@@ -33,7 +33,7 @@ export class AgentDetector {
 				}
 			}
 		} catch (error) {
-			// Si hay error al verificar, devolvemos universal
+			// If there's an error checking, we return universal
 			console.debug(`Error detecting agent in ${workspacePath}:`, error);
 		}
 
@@ -41,19 +41,19 @@ export class AgentDetector {
 	}
 
 	/**
-	 * Obtiene el mapeo de carpetas a agentes
-	 * Útil para entender qué carpetas se buscan
+	 * Gets the folder to agent mapping
+	 * Useful for understanding which folders are searched
 	 */
 	getAgentFolderMap(): Record<string, string> {
 		return { ...AGENT_FOLDER_MAP };
 	}
 
 	/**
-	 * Registra un nuevo mapeo de carpeta a agente
-	 * Permite extensiones adicionales de agentes
+	 * Registers a new folder to agent mapping
+	 * Allows additional agent extensions
 	 * 
-	 * @param folderName - Nombre de la carpeta característica del agente
-	 * @param agentId - ID del agente
+	 * @param folderName - Name of the folder characteristic of the agent
+	 * @param agentId - Agent ID
 	 */
 	registerAgent(folderName: string, agentId: string): void {
 		if (!folderName || !agentId) {
@@ -64,7 +64,7 @@ export class AgentDetector {
 	}
 
 	/**
-	 * Obtiene todos los agentes soportados
+	 * Gets all supported agents
 	 */
 	getSupportedAgents(): string[] {
 		const agents = new Set(Object.values(AGENT_FOLDER_MAP));
@@ -73,7 +73,7 @@ export class AgentDetector {
 	}
 
 	/**
-	 * Verifica si un agente es soportado
+	 * Checks if an agent is supported
 	 */
 	isAgentSupported(agentId: string): boolean {
 		return this.getSupportedAgents().includes(agentId);

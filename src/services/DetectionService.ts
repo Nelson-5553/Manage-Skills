@@ -3,12 +3,12 @@ import * as path from 'path';
 import { SKILLS_MAP, Technology } from '../config/skills-map';
 import { AgentDetector } from './AgentDetector';
 
-// Re-export para compatibilidad con código existente
+// Re-export for backward compatibility
 const agentDetector = new AgentDetector();
 
 /**
- * @deprecated Usa AgentDetector.detect() en su lugar
- * Mantenido para compatibilidad con código existente
+ * @deprecated Use AgentDetector.detect() instead
+ * Maintained for backward compatibility
  */
 export function DetectAgent(workspacePath: string): string | undefined {
 	return agentDetector.detect(workspacePath);
@@ -16,7 +16,7 @@ export function DetectAgent(workspacePath: string): string | undefined {
 	
 export class DetectionService {
 	/**
-	 * Detecta todas las tecnologías instaladas en un directorio
+	 * Detects all installed technologies in a directory
 	 */
 	static detectTechnologies(projectPath: string): Technology[] {
 		const detectedTechs: Technology[] = [];
@@ -31,40 +31,40 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica si una tecnología específica está instalada
+	 * Checks if a specific technology is installed
 	 */
 	static isTechnologyInstalled(projectPath: string, tech: Technology): boolean {
 		const { detect } = tech;
 
-		// Verificar paquetes
+		// Check packages
 		if (detect.packages && detect.packages.length > 0) {
 			if (this.checkPackages(projectPath, detect.packages)) {
 				return true;
 			}
 		}
 
-		// Verificar patrones de paquetes (regex)
+		// Check package patterns (regex)
 		if (detect.packagePatterns && detect.packagePatterns.length > 0) {
 			if (this.checkPackagePatterns(projectPath, detect.packagePatterns)) {
 				return true;
 			}
 		}
 
-		// Verificar archivos de configuración
+		// Check configuration files
 		if (detect.configFiles && detect.configFiles.length > 0) {
 			if (this.checkConfigFiles(projectPath, detect.configFiles)) {
 				return true;
 			}
 		}
 
-		// Verificar gemas (Ruby)
+		// Check gems (Ruby)
 		if (detect.gems && detect.gems.length > 0) {
 			if (this.checkGems(projectPath, detect.gems)) {
 				return true;
 			}
 		}
 
-		// Verificar contenido de archivos de configuración
+		// Check configuration file content
 		if (detect.configFileContent) {
 			const configs = Array.isArray(detect.configFileContent)
 				? detect.configFileContent
@@ -81,9 +81,9 @@ export class DetectionService {
 	}
 
 	/**
-	 * Lee y parsea el archivo package.json del proyecto
+	 * Reads and parses the project's package.json file
 	 * @private
-	 * @throws No lanza excepción, retorna null si hay error
+	 * @throws Does not throw exception, returns null on error
 	 */
 	private static readPackageJson(projectPath: string): Record<string, any> | null {
 		try {
@@ -100,7 +100,7 @@ export class DetectionService {
 	}
 
 	/**
-	 * Obtiene todas las dependencias de un package.json parseado
+	 * Gets all dependencies from a parsed package.json
 	 * @private
 	 */
 	private static getAllDependencies(packageJson: Record<string, any>): Record<string, any> {
@@ -112,7 +112,7 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica si los paquetes especificados existen en package.json
+	 * Checks if the specified packages exist in package.json
 	 */
 	private static checkPackages(projectPath: string, packages: string[]): boolean {
 		const packageJson = this.readPackageJson(projectPath);
@@ -125,7 +125,7 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica si hay paquetes que coincidan con los patrones especificados
+	 * Checks if there are packages matching the specified patterns
 	 */
 	private static checkPackagePatterns(projectPath: string, patterns: RegExp[]): boolean {
 		const packageJson = this.readPackageJson(projectPath);
@@ -139,7 +139,7 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica si los archivos de configuración existen
+	 * Checks if the configuration files exist
 	 */
 	private static checkConfigFiles(projectPath: string, configFiles: string[]): boolean {
 		return configFiles.some(file => {
@@ -149,7 +149,7 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica si existen gemas especificadas (Ruby)
+	 * Checks if specified gems exist (Ruby)
 	 */
 	private static checkGems(projectPath: string, gems: string[]): boolean {
 		try {
@@ -166,7 +166,7 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica contenido de archivos de configuración
+	 * Checks configuration file content
 	 */
 	private static checkConfigFileContent(
 		projectPath: string,
@@ -184,12 +184,12 @@ export class DetectionService {
 			try {
 				const content = fs.readFileSync(filePath, 'utf-8');
 
-				// Si es archivo de Gradle, procesar de forma especial
+				// If it's a Gradle file, process specially
 				if (config.scanGradleLayout && (file.endsWith('.gradle') || file.endsWith('build.gradle'))) {
 					return this.checkGradleContent(content, config.patterns);
 				}
 
-				// Búsqueda normal de patrones
+				// Normal pattern search
 				if (config.patterns.some(pattern => content.includes(pattern))) {
 					return true;
 				}
@@ -202,7 +202,7 @@ export class DetectionService {
 	}
 
 	/**
-	 * Verifica contenido específico de archivos Gradle
+	 * Checks specific content of Gradle files
 	 */
 	private static checkGradleContent(content: string, patterns: string[]): boolean {
 		return patterns.some(pattern => content.includes(pattern));

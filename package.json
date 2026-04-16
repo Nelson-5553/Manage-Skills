@@ -1,8 +1,8 @@
 {
   "name": "manage-skills",
-  "displayName": "manage-skills",
-  "description": "Para administrar skills intaladas en proyectos del usuario.",
-  "version": "0.0.1",
+  "displayName": "Manage Skills",
+  "description": "Automate skill installation for AI agents. Detect your project's tech stack and automatically install relevant skills for smarter AI assistance.",
+  "version": "0.1.0-beta",
   "engines": {
     "vscode": "^1.115.0"
   },

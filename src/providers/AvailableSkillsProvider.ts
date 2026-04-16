@@ -12,7 +12,7 @@ export class AvailableSkillsProvider extends BaseSkillTreeProvider {
 		if (!element) {
 			const availableTechs = this.technologies.filter(tech => !tech.installed);
 			return Promise.resolve(
-				availableTechs.map(tech => new TechnologyTreeItem(tech, this.extensionUri))
+				availableTechs.map(tech => new TechnologyTreeItem(tech, this.extensionUri, vscode.TreeItemCollapsibleState.Collapsed))
 			);
 		}
 
@@ -40,7 +40,7 @@ export class AvailableSkillsProvider extends BaseSkillTreeProvider {
 					tech.id.toLowerCase().includes(lowerQuery)
 				)
 			)
-			.map(tech => new TechnologyTreeItem(tech, this.extensionUri));
+			.map(tech => new TechnologyTreeItem(tech, this.extensionUri, vscode.TreeItemCollapsibleState.Collapsed));
 	}
 
 	/**

@@ -1,8 +1,10 @@
+<div align="center">
+
 # Manage skills
 
 ![Manage Skills Banner](resources/img/manage-skill-banner.png)
 
-**<center>Detect your tech stack. Automatically install the right AI skills.<center/>**
+**<center>Detect your technology set. Selectively install the right AI skills.<center/>**
 
 A lightweight VS Code extension that scans your project, detects your technologies, and recommends the best AI agent skills for your stack—then installs them with one click.
 
@@ -11,6 +13,8 @@ A lightweight VS Code extension that scans your project, detects your technologi
 Open the extension panel and click "Install All Suggested Skills"
 
 ```
+</div>
+
 ---
 
 ## How it works
@@ -38,13 +42,13 @@ Detects 100+ technologies across modern stacks:
 
 - **Backend:** Node.js, Express, NestJS, Hono, Spring Boot, Django
 
-- **Languages:** TypeScript, Python, Java, Go, Rust, C#
+- **Languages:** TypeScript, Python, Java, Go, Rust
 
 - **Data:** PostgreSQL, MongoDB, Firebase, Supabase, Prisma
 
 - **Testing:** Jest, Vitest, Playwright, Cypress
 
-- **Cloud:** AWS, Azure, GCP, Vercel, Cloudflare
+- **Cloud:** AWS, Azure , Vercel, Cloudflare
 
 ## Supported Agents
 

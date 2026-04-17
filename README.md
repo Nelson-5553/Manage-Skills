@@ -1,12 +1,10 @@
 # Manage skills
 
-  ![[resources/img/manage-skill-banner.png]]
+![Manage Skills Banner](resources/img/manage-skill-banner.png)
 
 **<center>Detect your tech stack. Automatically install the right AI skills.<center/>**
 
 A lightweight VS Code extension that scans your project, detects your technologies, and recommends the best AI agent skills for your stack—then installs them with one click.
-
-
 
 ```bash
 
@@ -14,6 +12,7 @@ Open the extension panel and click "Install All Suggested Skills"
 
 ```
 ---
+
 ## How it works
 
 1. Open your project in VS Code
@@ -34,7 +33,6 @@ That's it. No config needed.
 ## Supported Technologies
 
 Detects 100+ technologies across modern stacks:
-  
 
 - **Frontend:** React, Next.js, Vue, Nuxt, Svelte, Angular, Astro, Tailwind CSS
 
@@ -49,7 +47,6 @@ Detects 100+ technologies across modern stacks:
 - **Cloud:** AWS, Azure, GCP, Vercel, Cloudflare
 
 ## Supported Agents
-
 
 Works seamlessly with 30+ AI coding agents:
 
@@ -82,15 +79,17 @@ Plus universal support for any agent configuration.
 - **Granular control:** Install skills by technology or individually
 
 - **Real-time detection:** Refresh to re-scan your project
+
 ## Requirements
   
 - VS Code >= 1.115.0
 
 - Node.js >= 22
-- 
+
 ## Skills Powered by skills.sh
 
 All AI agent skills are provided by the [skills.sh](https://skills.sh) ecosystem. Manage Skills curates the best-rated skills from skills.sh for each technology and puts them at your service—automatically recommending and installing them based on your project's stack.
+
 ## License
 
 MIT

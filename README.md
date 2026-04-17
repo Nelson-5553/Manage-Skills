@@ -1,217 +1,96 @@
-# manage-skills
+# Manage skills
 
-**Automate skill installation for AI agents. Detect your project's tech stack and automatically install relevant skills for smarter AI assistance.**
+  ![[resources/img/manage-skill-banner.png]]
 
-## 🎯 What is manage-skills?
+**<center>Detect your tech stack. Automatically install the right AI skills.<center/>**
 
-`manage-skills` is a VS Code extension that bridges the gap between your project's technology stack and AI agents. When you use an AI assistant (like Claude, OpenCode, or any other agent), the quality of its help depends on understanding your project's technologies and best practices.
+A lightweight VS Code extension that scans your project, detects your technologies, and recommends the best AI agent skills for your stack—then installs them with one click.
 
-This extension:
 
-1. **🔍 Detects** your project's technology stack (React, Node.js, TypeScript, etc.)
-2. **📦 Suggests** relevant skills from the [skills.sh](https://skills.sh) ecosystem
-3. **⚡ Installs** skills automatically into your project
-4. **🧠 Enriches** your AI agent with context about your tech stack
 
-**Result**: Your AI agent knows your stack and can provide 100x better, more relevant assistance.
+```bash
 
-## 📊 How It Works
+Open the extension panel and click "Install All Suggested Skills"
 
-### Without manage-skills
 ```
-Developer: "How do I optimize React performance?"
-Agent: Generic answer about React optimization
-❌ Missing context about YOUR specific stack
-```
-
-### With manage-skills
-```
-Step 1: Extension detects React + TypeScript + Next.js
-Step 2: Installs relevant skills:
-   - vercel-labs/agent-skills/vercel-react-best-practices
-   - vercel-labs/agent-skills/vercel-composition-patterns
-   - vercel-labs/next-skills/next-best-practices
-Step 3: Developer asks question
-Step 4: Agent uses installed skills for context
-✅ Agent answers with YOUR stack in mind
-```
-
-## 🚀 Getting Started
-
-### Installation
-
-Install from VS Code Marketplace:
-- Open VS Code
-- Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)
-- Search for "manage-skills"
-- Click Install
-
-### First Use
+---
+## How it works
 
 1. Open your project in VS Code
-2. Click the "Manage Skills" icon in the Activity Bar (left sidebar)
-3. The extension automatically detects your tech stack
-4. In the "Suggested Skills" panel, you'll see detected technologies
-5. Click "Install All Suggested Skills" or install individual skills per technology
 
-### Two Views
+2. Click the **Manage Skills** icon in the activity bar
 
-**Suggested Skills** (Main)
-- Shows technologies detected in YOUR project
-- Click to expand and see relevant skills
-- One-click install all or pick individual skills
+3. The extension auto-detects your tech stack from `package.json`, config files, and dependencies
 
-**Available Skills**
-- Browse all ~100+ supported technologies
-- Find skills for tech you're planning to use
-- Install skills for upcoming projects
+4. View **Suggested Skills** for your detected technologies
 
-## 🛠️ Features
+5. View **Available Skills** for technologies you don't have installed
 
-- ✅ **Automatic Detection**: Scans package.json, config files, Gemfile, and more
-- ✅ **100+ Technologies**: React, Vue, Angular, Node.js, Python, Ruby, Go, Java, etc.
-- ✅ **Smart Agent Detection**: Detects your AI agent and installs optimized skills
-- ✅ **Batch Installation**: Install all skills for multiple technologies at once
-- ✅ **Search**: Find technologies quickly
-- ✅ **Activity Bar Integration**: Easy access from VS Code sidebar
+6. Install skills individually, by technology, or all at once
 
-## 📋 Supported Technologies
+  
+That's it. No config needed.
 
-### Frontend
-React, Vue, Angular, Svelte, Next.js, Nuxt, Astro, SvelteKit
+## Supported Technologies
 
-### Styling
-Tailwind CSS, PostCSS, Sass, Less, shadcn/ui, Styled Components
+Detects 100+ technologies across modern stacks:
+  
 
-### Backend
-Node.js, Express, Django, FastAPI, Flask, Rails, Sinatra, Go, Java, Spring
+- **Frontend:** React, Next.js, Vue, Nuxt, Svelte, Angular, Astro, Tailwind CSS
 
-### Languages
-JavaScript, TypeScript, Python, Ruby, Go, Java, C#, PHP, Rust, Kotlin
+- **Backend:** Node.js, Express, NestJS, Hono, Spring Boot, Django
 
-### Databases
-PostgreSQL, MongoDB, MySQL, SQLite, Redis, Firebase, Supabase
+- **Languages:** TypeScript, Python, Java, Go, Rust, C#
 
-### DevTools
-Git, Docker, Kubernetes, Jenkins, GitHub Actions, GitLab CI
+- **Data:** PostgreSQL, MongoDB, Firebase, Supabase, Prisma
 
-### Testing
-Jest, Vitest, Mocha, Pytest, RSpec, JUnit, Playwright, Cypress
+- **Testing:** Jest, Vitest, Playwright, Cypress
 
-...and 50+ more! See full list in `SKILLS_MAP` configuration.
+- **Cloud:** AWS, Azure, GCP, Vercel, Cloudflare
 
-## 🎓 How Skills Work
+## Supported Agents
 
-Skills are AI-readable knowledge packages from [skills.sh](https://skills.sh). They contain:
-- Best practices for a technology
-- Common patterns and anti-patterns
-- Performance optimization tips
-- Security guidelines
-- API references
 
-When you install a skill, it's added to your project. When you ask your AI agent a question, it automatically reads these skills to provide context-aware answers.
+Works seamlessly with 30+ AI coding agents:
 
-## 💡 Example Workflows
+- **Claude Code** · **Cursor** · **Cline** · **Codex** · **OpenCode**
 
-### Workflow 1: New React Project
-```
-1. Create new React app: npx create-react-app my-app
-2. Open in VS Code
-3. Click "Manage Skills" extension
-4. See "React" detected automatically
-5. Click "Install All Suggested Skills"
-6. Done! Now ask AI about React - it understands your stack
-```
+- **Antigravity** · **Augment** · **GitHub Copilot** · **Gemini CLI** · **Junie**
 
-### Workflow 2: Migrating to Next.js
-```
-1. Add Next.js: npm install next
-2. Extension detects Next.js
-3. Install Next.js skills
-4. Ask: "How do I migrate my pages to Next.js App Router?"
-5. Agent understands Next.js best practices
-```
+- **Amp** · **SuperMaven** · **CodeBuddy** · **Continue** · **Kiro CLI**
 
-### Workflow 3: Full Stack Setup
-```
-1. Project with: React + Node.js + PostgreSQL + Docker
-2. Extension detects all 4
-3. One click: "Install All Suggested Skills"
-4. Installs skills for entire stack
-5. AI agent now understands your complete architecture
-```
+- **IBM Bob** · **Command Code** · **Cortex Code** · **Crush** · **Droid**
 
-## ⚙️ Configuration
+- **Goose** · **IFlow CLI** · **Kilo Code** · **Kode** · **MCPJam**
 
-### Detecting Your Agent
+- **Mistral Vibe** · **Mux** · **OpenHands** · **Pi** · **Qoder**
 
-The extension automatically detects your AI agent:
-- **OpenCode** → Installs agent-specific optimized skills
-- **Claude** → Installs Claude-optimized skills
-- **Other agents** → Installs universal skills
+- **Qwen Code** · **Roo Code** · **Trae** · **Windsurf** · **Zencoder**
 
-The detection happens automatically by checking standard agent folder structures.
+- **Neovate** · **Pochi** · **ADAL**
 
-### Manually Installing Skills
+Plus universal support for any agent configuration.
 
-You can also:
-1. Expand a technology to see individual skills
-2. Click the download icon next to any skill
-3. Install specific skills manually
+## Features
 
-### Adding New Technologies
+- **Auto-detection:** Scans your project instantly
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) to add support for new technologies.
+- **Multi-agent support:** Works with OpenCode, Claude, and universal agents
 
-## 🔧 How to Contribute
+- **One-click install:** Install all suggested skills for your tech stack
 
-We'd love your help! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
-- Adding new technologies
-- Fixing detection logic
-- Improving UI/UX
-- Reporting bugs
-- Suggesting features
+- **Granular control:** Install skills by technology or individually
 
-## 📚 Resources
+- **Real-time detection:** Refresh to re-scan your project
+## Requirements
+  
+- VS Code >= 1.115.0
 
-- [skills.sh Documentation](https://skills.sh) - Learn about the skills ecosystem
-- [VS Code Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-- [Architecture Documentation](ARCHITECTURE.md) - Deep dive into how manage-skills works
+- Node.js >= 22
+- 
+## Skills Powered by skills.sh
 
-## 🐛 Issues & Bugs
+All AI agent skills are provided by the [skills.sh](https://skills.sh) ecosystem. Manage Skills curates the best-rated skills from skills.sh for each technology and puts them at your service—automatically recommending and installing them based on your project's stack.
+## License
 
-Found a bug? Have a suggestion? [Open an issue](https://github.com/yourusername/manage-skills/issues)
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) for details
-
-## 🙏 Credits
-
-- Built with [Vercel's Skills Ecosystem](https://skills.sh)
-- Icon designs by [your team]
-- Contributors: [Community]
-
----
-
-**Questions?** Check the [FAQ](#faq) or open a discussion.
-
-## FAQ
-
-**Q: Do I need to install skills to use manage-skills?**
-A: No, but installing skills makes your AI agent much more helpful.
-
-**Q: Can I use manage-skills without an AI agent?**
-A: Yes, but the main benefit is giving your AI agent better context.
-
-**Q: How often should I re-detect technologies?**
-A: Automatically after you install new packages. You can also manually refresh.
-
-**Q: Can I remove installed skills?**
-A: Currently managed via `npx skills list` and `npx skills remove`. We're working on UI support.
-
-**Q: Does it work with projects that have no package.json?**
-A: Yes! We support Python (requirements.txt), Ruby (Gemfile), Java (gradle/maven), etc.
-
-**Q: Is my code scanned/sent anywhere?**
-A: No. The extension only reads your local files to detect technologies. No data is sent to any server.
+MIT

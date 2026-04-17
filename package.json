@@ -16,7 +16,7 @@
         {
           "id": "manageSkillsView",
           "title": "Manage Skills",
-          "icon": "resources/skills-icon.svg"
+          "icon": "$(search-sparkle)"
         }
       ]
     },
@@ -25,12 +25,12 @@
         {
           "id": "suggestedSkillsView",
           "name": "Suggested Skills",
-          "icon": "resources/suggested-skills-icon.svg"
+          "icon": "$(light-bulb)"
         },
         {
           "id": "skillsView",
           "name": "Skills",
-          "icon": "resources/skills-icon.svg"
+          "icon": "$(layers)"
         }
       ]
     },
@@ -52,7 +52,7 @@
       {
         "command": "manage-skills.installTechSkills",
         "title": "Install Technology Skills",
-        "icon": "$(tools)"
+        "icon": "$(arrow-circle-down)"
       },
       {
         "command": "manage-skills.installAllSuggestedSkills",
@@ -64,7 +64,6 @@
         "title": "Refresh Skills",
         "icon": "$(refresh)"
       }
-    
     ],
     "menus": {
       "view/item/context": [
@@ -93,7 +92,6 @@
           "when": "viewItem == skill-item",
           "group": "inline@1"
         }
-
       ]
     }
   },
@@ -106,13 +104,13 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.115.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "typescript-eslint": "^8.56.1",
+    "@types/vscode": "^1.115.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.39.3",
     "typescript": "^5.9.3",
-    "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "typescript-eslint": "^8.56.1"
   }
 }

@@ -1,27 +1,27 @@
 /**
- * Configuración global de la extensión Manage Skills
+ * Global Manage Skills configuration
  */
 export const config = {
-	// Configuración de la extensión
+	// Extension config
 	extension: {
 		id: 'manage-skills',
 		name: 'Manage Skills',
 		displayName: 'Manage Skills Extension'
 	},
 
-	// Configuración de almacenamiento
+	// Storage config
 	storage: {
 		skillsStorageKey: 'manage-skills.skills',
 		installedSkillsKey: 'manage-skills.installed-skills'
 	},
 
-	// Configuración de vistas
+	// Views config
 	views: {
 		availableSkillsView: 'skillsView',
 		installedSkillsView: 'installedSkillsView'
 	},
 
-	// Categorías de skills
+	// Skill categories
 	skillCategories: {
 		language: 'Lenguajes',
 		framework: 'Frameworks',
@@ -33,7 +33,7 @@ export const config = {
 		other: 'Otros'
 	},
 
-	// Rutas por defecto
+	// Default paths
 	paths: {
 		resourcesDir: 'resources',
 		iconsDir: 'resources/icons'

@@ -2,19 +2,19 @@ import * as vscode from 'vscode';
 import { Technology } from '../models/Technology';
 
 /**
- * Tipo unión para representar cualquier elemento del árbol
+ * Union type for tree elements
  */
 export type TreeElement = TechnologyTreeItem | SkillItemTreeItem | HeaderTreeItem;
 
 /**
- * Interfaz para elementos de cabecera del árbol
+ * Header tree item interface
  */
 export interface HeaderTreeItem extends vscode.TreeItem {
 	buttons?: { iconPath: vscode.ThemeIcon | vscode.Uri | { light: vscode.Uri; dark: vscode.Uri }; tooltip?: string | vscode.MarkdownString; command?: string | vscode.Command; arguments?: any[] }[];
 }
 
 /**
- * Provider base para los árboles de tecnologías
+ * Base tree provider
  */
 export abstract class BaseSkillTreeProvider implements vscode.TreeDataProvider<TreeElement> {
 	protected _onDidChangeTreeData: vscode.EventEmitter<TreeElement | undefined | null | void> =
@@ -51,7 +51,7 @@ export abstract class BaseSkillTreeProvider implements vscode.TreeDataProvider<T
 	}
 
 	/**
-	 * Ayudante para agregar botones inline a un TreeItem
+	 * Adds inline button to tree item
 	 */
 	protected addInlineButton(
 		item: vscode.TreeItem,
@@ -72,7 +72,7 @@ export abstract class BaseSkillTreeProvider implements vscode.TreeDataProvider<T
 }
 
 /**
- * Elemento personalizado del árbol de tecnologías
+ * Technology tree item
  */
 export class TechnologyTreeItem extends vscode.TreeItem {
 	public buttons?: any[];
@@ -101,11 +101,11 @@ export class TechnologyTreeItem extends vscode.TreeItem {
 			this.iconPath = { light: fallbackUriLight, dark: fallbackUriDark };
 		}
 		
-		// Agregar inline buttons para la tecnología
+		// Add inline button for installation
 		this.buttons = [
 			{
 				iconPath: new vscode.ThemeIcon('arrow-down'),
-				tooltip: 'Instalar todos los skills de esta tecnología',
+				tooltip: 'Install all skills for this technology',
 				command: 'manage-skills.installTechSkills',
 				arguments: [technology.id]
 			}
@@ -122,7 +122,7 @@ export class TechnologyTreeItem extends vscode.TreeItem {
 }
 
 /**
- * Elemento del árbol que representa un skill individual
+ * Skill tree item
  */
 export class SkillItemTreeItem extends vscode.TreeItem {
 	constructor(
@@ -135,6 +135,6 @@ export class SkillItemTreeItem extends vscode.TreeItem {
 	}
 
 	private buildTooltip(): string {
-		return `Skill: ${this.skillName}\n\nClick para instalar el skill`;
+		return `Skill: ${this.skillName}\n\nClick to install skill`;
 	}
 }

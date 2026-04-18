@@ -5,7 +5,7 @@ import { AvailableSkillsProvider } from './providers/AvailableSkillsProvider';
 import { SuggestedSkillsProvider } from './providers/SuggestedSkillsProvider';
 
 /**
- * Contexto global de la extensión
+ * Global extension context
  */
 let skillsService: SkillsService;
 let installSkillService: InstallSkillService;
@@ -13,22 +13,20 @@ let availableSkillsProvider: AvailableSkillsProvider;
 let suggestedSkillsProvider: SuggestedSkillsProvider;
 
 /**
- * Esta función se ejecuta cuando la extensión se activa
+ * Activates the extension
  */
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Extensión "manage-skills" activada');
+	console.log('Extension "manage-skills" activated');
 
-	// Inicializar el servicio de skills
+	// Initialize services
 	skillsService = new SkillsService();
-
-	// Inicializar el servicio de instalación
 	installSkillService = new InstallSkillService(skillsService);
 
-	// Inicializar los providers
+	// Initialize providers
 	availableSkillsProvider = new AvailableSkillsProvider(skillsService.getAvailableTechnologies(), context.extensionUri);
 	suggestedSkillsProvider = new SuggestedSkillsProvider(skillsService.getAvailableTechnologies(), context.extensionUri);
 
-	// Registrar los providers en VS Code
+	// Register providers
 	context.subscriptions.push(
 		vscode.window.registerTreeDataProvider('skillsView', availableSkillsProvider)
 	);
@@ -36,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.registerTreeDataProvider('suggestedSkillsView', suggestedSkillsProvider)
 	);
 
-	// Escuchar cambios en las tecnologías
+	// Listen for technology changes
 	context.subscriptions.push(
 		skillsService.onTechnologiesChanged((technologies) => {
 			availableSkillsProvider.updateTechnologies(technologies.filter(t => !t.installed));
@@ -44,15 +42,14 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
-	// Detectar tecnologías en el workspace
+	// Detect workspace technologies
 	detectWorkspaceTechnologies();
 
-	// Registrar comandos
 	registerCommands(context);
 }
 
 /**
- * Detecta tecnologías en los workspaces abiertos
+ * Detects technologies in workspace
  */
 function detectWorkspaceTechnologies(): void {
 	if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
@@ -64,11 +61,8 @@ function detectWorkspaceTechnologies(): void {
 }
 
 /**
- * Registra todos los comandos de la extensión
+ * Registers extension commands
  */
-
-// Comando: Abrir documentación de un skill
-
 function registerCommands(context: vscode.ExtensionContext): void {
 	context.subscriptions.push(
 	vscode.commands.registerCommand('manage-skills.openDocs', async (arg: any) => {
@@ -79,7 +73,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
 	} else if (arg && typeof arg === 'object' && arg.skillName) {
 		skillName = arg.skillName;
 	} else {
-		vscode.window.showErrorMessage('No se pudo determinar el skill');
+		vscode.window.showErrorMessage('Could not determine skill');
 		return;
 	}
 	
@@ -88,28 +82,25 @@ function registerCommands(context: vscode.ExtensionContext): void {
 })
 );
 
-	// Comando: Redetectar tecnologías
+	// Redetect technologies
 	context.subscriptions.push(
 		vscode.commands.registerCommand('manage-skills.redetectTechnologies', () => {
 			detectWorkspaceTechnologies();
-			vscode.window.showInformationMessage('Tecnologías redetectadas');
+			vscode.window.showInformationMessage('Technologies redetected');
 		})
 	);
 
-	// Comando: Instalar un skill individual
+	// Install individual skill
 	context.subscriptions.push(
 		vscode.commands.registerCommand('manage-skills.installSkill', async (arg: any) => {
-			// El argumento puede ser un string (skillName) o un SkillItemTreeItem (desde el menú contextual)
 			let skillName: string;
 			
 			if (typeof arg === 'string') {
-				// Caso: llamado desde el botón inline con arguments: [skillName]
 				skillName = arg;
 			} else if (arg && typeof arg === 'object' && arg.skillName) {
-				// Caso: llamado desde el menú contextual, recibe el TreeItem
 				skillName = arg.skillName;
 			} else {
-				vscode.window.showErrorMessage('No se pudo determinar el skill');
+				vscode.window.showErrorMessage('Could not determine skill');
 				return;
 			}
 
@@ -117,53 +108,67 @@ function registerCommands(context: vscode.ExtensionContext): void {
 		})
 	);
 
-	// Comando: Instalar todos los skills de una tecnología específica
-	context.subscriptions.push(
-		vscode.commands.registerCommand('manage-skills.installTechSkills', async (arg: any) => {
-			// El argumento puede ser un string (ID) o un TechnologyTreeItem (desde el menú contextual)
-			let technologyId: string;
-			
-			if (typeof arg === 'string') {
-				// Caso: llamado desde el botón inline con arguments: [technology.id]
-				technologyId = arg;
-			} else if (arg && typeof arg === 'object' && arg.technology) {
-				// Caso: llamado desde el menú contextual, recibe el TreeItem
-				technologyId = arg.technology.id;
-			} else {
-				vscode.window.showErrorMessage('No se pudo determinar la tecnología');
-				return;
-			}
+	// Install all skills for a technology
+context.subscriptions.push(
+    vscode.commands.registerCommand('manage-skills.installTechSkills', async (arg: any) => {
+        let technologyId: string;
 
-			const technology = skillsService.getTechnologyById(technologyId);
-			if (!technology) {
-				vscode.window.showErrorMessage(`Tecnología ${technologyId} no encontrada`);
-				return;
-			}
+        if (typeof arg === 'string') {
+            technologyId = arg;
+        } else if (arg && typeof arg === 'object' && arg.technology) {
+            technologyId = arg.technology.id;
+        } else {
+            // Command palette fallback → QuickPick
+            const technologies = skillsService.getAllTechnologies();
 
-			const skills = technology.skills || [];
-			if (skills.length === 0) {
-				vscode.window.showWarningMessage(`No hay skills para la tecnología ${technology.name}`);
-				return;
-			}
+            if (!technologies || technologies.length === 0) {
+                vscode.window.showWarningMessage('No technologies available');
+                return;
+            }
 
-			await installSkillService.installMultipleSkills(skills, {
-				showProgress: true,
-				stopOnError: false
-			});
-		})
-	);
+            const picked = await vscode.window.showQuickPick(
+                technologies.map(tech => ({
+                    label: tech.name,
+                    description: `${tech.skills?.length ?? 0} skills`,
+                    id: tech.id
+                })),
+                { placeHolder: 'Select a technology to install its skills' }
+            );
 
-	// Comando: Instalar todos los skills sugeridos
+            if (!picked) return;
+
+            technologyId = picked.id;
+        }
+
+        const technology = skillsService.getTechnologyById(technologyId);
+        if (!technology) {
+            vscode.window.showErrorMessage(`Technology ${technologyId} not found`);
+            return;
+        }
+
+        const skills = technology.skills || [];
+        if (skills.length === 0) {
+            vscode.window.showWarningMessage(`No skills available for ${technology.name}`);
+            return;
+        }
+
+        await installSkillService.installMultipleSkills(skills, {
+            showProgress: true,
+            stopOnError: false
+        });
+    })
+);
+	// Install all suggested skills
 	context.subscriptions.push(
 		vscode.commands.registerCommand('manage-skills.installAllSuggestedSkills', async () => {
 			const detectedTechnologies = suggestedSkillsProvider.getDetectedTechnologies();
 
 			if (detectedTechnologies.length === 0) {
-				vscode.window.showWarningMessage('No hay tecnologías detectadas para instalar skills');
+				vscode.window.showWarningMessage('No technologies detected');
 				return;
 			}
 
-			// Recopilar todos los skills de las tecnologías detectadas
+			// Collect all skills from detected technologies
 			const allSkills: string[] = [];
 			detectedTechnologies.forEach(tech => {
 				if (tech.skills && tech.skills.length > 0) {
@@ -172,7 +177,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
 			});
 
 			if (allSkills.length === 0) {
-				vscode.window.showWarningMessage('No hay skills sugeridos para instalar');
+				vscode.window.showWarningMessage('No suggested skills available');
 				return;
 			}
 
@@ -182,7 +187,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
 }
 
 /**
- * Esta función se ejecuta cuando la extensión se desactiva
+ * Deactivates the extension
  */
 export function deactivate(): void {
 	skillsService?.dispose();

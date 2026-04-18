@@ -1,16 +1,16 @@
 /**
- * Utilidades comunes para la extensión
+ * Common utilities
  */
 
 /**
- * Valida si un ID de skill es válido
+ * Validates skill ID format
  */
 export function isValidSkillId(id: string): boolean {
 	return /^[a-z0-9\-_]+$/.test(id) && id.length > 0;
 }
 
 /**
- * Formatea un nombre de categoría para mostrar
+ * Formats category name for display
  */
 export function formatCategoryName(category: string): string {
 	return category
@@ -20,14 +20,14 @@ export function formatCategoryName(category: string): string {
 }
 
 /**
- * Obtiene el ícono de estado basado en si está instalado
+ * Gets status icon
  */
 export function getStatusIcon(installed: boolean): string {
 	return installed ? '✓' : '○';
 }
 
 /**
- * Valida una URL
+ * Validates URL
  */
 export function isValidUrl(url: string): boolean {
 	try {
@@ -39,7 +39,7 @@ export function isValidUrl(url: string): boolean {
 }
 
 /**
- * Trunca un string a una longitud máxima
+ * Truncates string to max length
  */
 export function truncateString(str: string, maxLength: number): string {
 	if (str.length <= maxLength) {

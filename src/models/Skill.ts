@@ -1,5 +1,5 @@
 /**
- * Modelo que representa una habilidad (skill) en el sistema
+ * Skill model
  */
 export interface Skill {
 	id: string;
@@ -16,7 +16,7 @@ export interface Skill {
 }
 
 /**
- * Categorías disponibles para las habilidades
+ * Skill categories
  */
 export enum SkillCategory {
 	LANGUAGE = 'language',
@@ -30,7 +30,7 @@ export enum SkillCategory {
 }
 
 /**
- * Fuente de donde proviene el skill
+ * Skill source
  */
 export enum SkillSource {
 	LOCAL = 'local',
@@ -40,7 +40,7 @@ export enum SkillSource {
 }
 
 /**
- * Estado de instalación de un skill
+ * Skill installation state
  */
 export interface SkillInstallationState {
 	skillId: string;

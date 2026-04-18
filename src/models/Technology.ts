@@ -1,7 +1,7 @@
 import { Technology as SkillMapTechnology } from '../config/skills-map';
 
 /**
- * Modelo extendido de Technology que incluye propiedades de estado
+ * Technology model with state properties
  */
 export interface Technology extends SkillMapTechnology {
 	installed: boolean;
@@ -9,7 +9,7 @@ export interface Technology extends SkillMapTechnology {
 }
 
 /**
- * Estado de instalación de una tecnología
+ * Technology installation state
  */
 export interface TechnologyInstallationState {
 	technologyId: string;

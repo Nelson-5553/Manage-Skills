@@ -4,21 +4,21 @@ import { Technology } from '../models/Technology';
 import { DetectionService } from '../services/DetectionService';
 
 /**
- * Elemento de cabecera para el árbol de skills sugeridos
+ * Header for suggested skills
  */
 class SuggestedSkillsHeaderItem extends vscode.TreeItem implements HeaderTreeItem {
 	public buttons?: any[];
 
 	constructor(suggestedCount: number) {
 		super('Suggested Skills', vscode.TreeItemCollapsibleState.Expanded);
-		this.description = `${suggestedCount} tecnología(s) detectada(s)`;
+		this.description = `${suggestedCount} detected technology${suggestedCount !== 1 ? 'ies' : ''}`;
 		this.contextValue = 'suggested-skills-header';
 
-		// Agregar inline button a la cabecera
+		// Add inline button
 		this.buttons = [
 			{
 				iconPath: new vscode.ThemeIcon('arrow-down'),
-				tooltip: 'Instalar todos los skills sugeridos',
+				tooltip: 'Install all suggested skills',
 				command: 'manage-skills.installAllSuggestedSkills',
 				arguments: []
 			}
@@ -27,8 +27,7 @@ class SuggestedSkillsHeaderItem extends vscode.TreeItem implements HeaderTreeIte
 }
 
 /**
- * Provider para mostrar las tecnologías sugeridas detectadas en el workspace
- * con sus skills expandibles
+ * Shows suggested technologies detected in workspace
  */
 export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	private workspacePath: string = '';
@@ -40,7 +39,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	}
 
 	/**
-	 * Actualiza la ruta del workspace y detecta las tecnologías
+	 * Sets workspace path and detects technologies
 	 */
 	setWorkspacePath(workspacePath: string): void {
 		this.workspacePath = workspacePath;
@@ -48,7 +47,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	}
 
 	/**
-	 * Detecta las tecnologías en el workspace usando DetectionService
+	 * Detects technologies in workspace
 	 */
 	private detectTechnologies(): void {
 		if (!this.workspacePath) {
@@ -59,7 +58,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 
 		const detected = DetectionService.detectTechnologies(this.workspacePath);
 		
-		// Enriquecemos los datos detectados con la información de skills
+		// Enriches detected technologies with skill data
 		this.detectedTechnologies = detected
 			.map(detectedTech => {
 				const fullTech = this.technologies.find(t => t.id === detectedTech.id);
@@ -85,7 +84,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
             return Promise.resolve([headerItem]);
         }
 
-        // Si el elemento es la cabecera, retornar las tecnologías detectadas
+        // Returns detected technologies
         if (element instanceof SuggestedSkillsHeaderItem) {
             return Promise.resolve(
                 this.detectedTechnologies.map(tech => 
@@ -94,7 +93,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
             );
         }
 
-		// Si el elemento es una tecnología, retornamos sus skills
+		// Returns skills for technology
 		if (element instanceof TechnologyTreeItem) {
 			const skillItems = element.technology.skills.map(
 				skill => new SkillItemTreeItem(skill, element.technology.id) as unknown as TreeElement
@@ -102,19 +101,19 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 			return Promise.resolve(skillItems);
 		}
 
-		// Si es un skill, no tiene hijos
+		// Skills have no children
 		return Promise.resolve([]);
 	}
 
 	/**
-	 * Obtiene el número de tecnologías detectadas/sugeridas
+	 * Gets count of suggested technologies
 	 */
 	getSuggestedCount(): number {
 		return this.detectedTechnologies.length;
 	}
 
 	/**
-	 * Obtiene las tecnologías detectadas
+	 * Gets detected technologies
 	 */
 	getDetectedTechnologies(): Technology[] {
 		return this.detectedTechnologies;

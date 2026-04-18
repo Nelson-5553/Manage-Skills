@@ -3,12 +3,11 @@ import { BaseSkillTreeProvider, TechnologyTreeItem, SkillItemTreeItem, TreeEleme
 import { Technology } from '../models/Technology';
 
 /**
- * Provider para mostrar las tecnologías disponibles para instalar
- * con sus skills expandibles
+ * Shows available technologies with their skills
  */
 export class AvailableSkillsProvider extends BaseSkillTreeProvider {
 	getChildren(element?: TreeElement): Thenable<TreeElement[]> {
-		// Si no hay elemento, retornamos las tecnologías raíz (disponibles)
+		// Returns root technologies if no element
 		if (!element) {
 			const availableTechs = this.technologies.filter(tech => !tech.installed);
 			return Promise.resolve(
@@ -16,7 +15,7 @@ export class AvailableSkillsProvider extends BaseSkillTreeProvider {
 			);
 		}
 
-		// Si el elemento es una tecnología, retornamos sus skills
+		// Returns skills for technology
 		if (element instanceof TechnologyTreeItem) {
 			const skillItems = element.technology.skills.map(
 				skill => new SkillItemTreeItem(skill, element.technology.id)
@@ -24,12 +23,12 @@ export class AvailableSkillsProvider extends BaseSkillTreeProvider {
 			return Promise.resolve(skillItems);
 		}
 
-		// Si es un skill, no tiene hijos
+		// Skills have no children
 		return Promise.resolve([]);
 	}
 
 	/**
-	 * Busca tecnologías disponibles
+	 * Searches available technologies
 	 */
 	searchTechnologies(query: string): TechnologyTreeItem[] {
 		const lowerQuery = query.toLowerCase();
@@ -44,7 +43,7 @@ export class AvailableSkillsProvider extends BaseSkillTreeProvider {
 	}
 
 	/**
-	 * Obtiene el número de tecnologías disponibles
+	 * Gets count of available technologies
 	 */
 	getAvailableCount(): number {
 		return this.technologies.filter(tech => !tech.installed).length;

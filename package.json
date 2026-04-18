@@ -3,7 +3,7 @@
   "displayName": "Manage Skills",
   "icon": "resources/img/icon-manage-skill.png",
   "description": "Automate skill installation for AI agents. Detect your project's tech stack and automatically install relevant skills for smarter AI assistance.",
-  "version": "0.1.3",
+  "version": "0.1.2",
   "publisher": "Nelson-5553",
   "engines": {
     "vscode": "^1.115.0"

@@ -109,38 +109,55 @@ function registerCommands(context: vscode.ExtensionContext): void {
 	);
 
 	// Install all skills for a technology
-	context.subscriptions.push(
-		vscode.commands.registerCommand('manage-skills.installTechSkills', async (arg: any) => {
-			let technologyId: string;
-			
-			if (typeof arg === 'string') {
-				technologyId = arg;
-			} else if (arg && typeof arg === 'object' && arg.technology) {
-				technologyId = arg.technology.id;
-			} else {
-				vscode.window.showErrorMessage('Could not determine technology');
-				return;
-			}
+context.subscriptions.push(
+    vscode.commands.registerCommand('manage-skills.installTechSkills', async (arg: any) => {
+        let technologyId: string;
 
-			const technology = skillsService.getTechnologyById(technologyId);
-			if (!technology) {
-			vscode.window.showErrorMessage(`Technology ${technologyId} not found`);
-				return;
-			}
+        if (typeof arg === 'string') {
+            technologyId = arg;
+        } else if (arg && typeof arg === 'object' && arg.technology) {
+            technologyId = arg.technology.id;
+        } else {
+            // Command palette fallback → QuickPick
+            const technologies = skillsService.getAllTechnologies();
 
-			const skills = technology.skills || [];
-			if (skills.length === 0) {
-			vscode.window.showWarningMessage(`No skills available for ${technology.name}`);
-				return;
-			}
+            if (!technologies || technologies.length === 0) {
+                vscode.window.showWarningMessage('No technologies available');
+                return;
+            }
 
-			await installSkillService.installMultipleSkills(skills, {
-				showProgress: true,
-				stopOnError: false
-			});
-		})
-	);
+            const picked = await vscode.window.showQuickPick(
+                technologies.map(tech => ({
+                    label: tech.name,
+                    description: `${tech.skills?.length ?? 0} skills`,
+                    id: tech.id
+                })),
+                { placeHolder: 'Select a technology to install its skills' }
+            );
 
+            if (!picked) return;
+
+            technologyId = picked.id;
+        }
+
+        const technology = skillsService.getTechnologyById(technologyId);
+        if (!technology) {
+            vscode.window.showErrorMessage(`Technology ${technologyId} not found`);
+            return;
+        }
+
+        const skills = technology.skills || [];
+        if (skills.length === 0) {
+            vscode.window.showWarningMessage(`No skills available for ${technology.name}`);
+            return;
+        }
+
+        await installSkillService.installMultipleSkills(skills, {
+            showProgress: true,
+            stopOnError: false
+        });
+    })
+);
 	// Install all suggested skills
 	context.subscriptions.push(
 		vscode.commands.registerCommand('manage-skills.installAllSuggestedSkills', async () => {

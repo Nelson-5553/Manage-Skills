@@ -615,7 +615,6 @@ export const SKILLS_MAP: Technology[] = [
     },
     skills: [
       "wshobson/agents/nodejs-backend-patterns",
-      "sickn33/antigravity-awesome-skills/nodejs-best-practices",
     ],
     icon: "resources/icons/nodejs.svg"
   },

@@ -1,8 +1,10 @@
 {
   "name": "manage-skills",
   "displayName": "Manage Skills",
+  "icon": "resources/img/icon-manage-skill.png",
   "description": "Automate skill installation for AI agents. Detect your project's tech stack and automatically install relevant skills for smarter AI assistance.",
-  "version": "0.1.0-beta",
+  "version": "0.1.3",
+  "publisher": "Nelson-5553",
   "engines": {
     "vscode": "^1.115.0"
   },
@@ -10,6 +12,13 @@
     "Other"
   ],
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:manageSkillsView"
+  ],
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/Nelson-5553/Manage-Skills"
+  },  
   "contributes": {
     "viewsContainers": {
       "activitybar": [
@@ -42,7 +51,8 @@
       },
       {
         "command": "manage-skills.redetectTechnologies",
-        "title": "Refresh Skills"
+        "title": "Refresh Skills",
+        "icon": "$(refresh)"
       },
       {
         "command": "manage-skills.installSkill",
@@ -58,11 +68,6 @@
         "command": "manage-skills.installAllSuggestedSkills",
         "title": "Install All Suggested Skills",
         "icon": "$(layers)"
-      },
-      {
-        "command": "manage-skills.redetectTechnologies",
-        "title": "Refresh Skills",
-        "icon": "$(refresh)"
       }
     ],
     "menus": {

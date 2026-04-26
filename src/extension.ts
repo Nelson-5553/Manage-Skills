@@ -3,6 +3,7 @@ import { SkillsService } from './services/SkillsService';
 import { InstallSkillService } from './services/InstallSkillService';
 import { AvailableSkillsProvider } from './providers/AvailableSkillsProvider';
 import { SuggestedSkillsProvider } from './providers/SuggestedSkillsProvider';
+import { FRONTEND_SKILLS } from './config/skills-map';
 
 /**
  * Global extension context
@@ -176,12 +177,27 @@ context.subscriptions.push(
 				}
 			});
 
+			// Add frontend skills
+			allSkills.push(...FRONTEND_SKILLS);
+
 			if (allSkills.length === 0) {
 				vscode.window.showWarningMessage('No suggested skills available');
 				return;
 			}
 
 			await installSkillService.installAllSuggestedSkills(allSkills);
+		})
+	);
+
+	// Install frontend skills only
+	context.subscriptions.push(
+		vscode.commands.registerCommand('manage-skills.installFrontendSkills', async () => {
+			if (FRONTEND_SKILLS.length === 0) {
+				vscode.window.showWarningMessage('No frontend skills available');
+				return;
+			}
+
+			await installSkillService.installAllSuggestedSkills(FRONTEND_SKILLS);
 		})
 	);
 }

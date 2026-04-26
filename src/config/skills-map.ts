@@ -1107,6 +1107,12 @@ export const SKILLS_MAP: Technology[] = [
   },
 ];
 
+export const FRONTEND_SKILLS: string[] = [
+  "anthropics/skills/frontend-design",
+  "addyosmani/web-quality-skills/accessibility",
+  "addyosmani/web-quality-skills/seo",
+];
+
 // ── Agent Folder Map ─────────────────────────────────────────
 
 export const AGENT_FOLDER_MAP: Record<string, string> = {

@@ -54,12 +54,24 @@ class FrontendSkillsHeaderItem extends vscode.TreeItem implements HeaderTreeItem
  * Frontend skill item
  */
 class FrontendSkillItemTreeItem extends vscode.TreeItem {
+	public buttons?: any[];
+
 	constructor(
 		public readonly skillName: string
 	) {
 		super(skillName, vscode.TreeItemCollapsibleState.None);
 		this.tooltip = this.buildTooltip();
 		this.contextValue = 'frontend-skill-item';
+
+		// Add inline button for installation
+		this.buttons = [
+			{
+				iconPath: new vscode.ThemeIcon('arrow-down'),
+				tooltip: 'Install this skill',
+				command: 'manage-skills.installSkill',
+				arguments: [skillName]
+			}
+		];
 	}
 
 	private buildTooltip(): string {
@@ -73,6 +85,7 @@ class FrontendSkillItemTreeItem extends vscode.TreeItem {
 export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	private workspacePath: string = '';
 	private detectedTechnologies: Technology[] = [];
+	private hasFrontendFiles: boolean = false;
 
 	constructor(technologies: Technology[],  extensionUri: vscode.Uri) {
 		super(technologies, extensionUri);
@@ -93,6 +106,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	private detectTechnologies(): void {
 		if (!this.workspacePath) {
 			this.detectedTechnologies = [];
+			this.hasFrontendFiles = false;
 			this.refresh();
 			return;
 		}
@@ -115,6 +129,9 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 			})
 			.filter(tech => tech.skills && tech.skills.length > 0);
 
+		// Detect if there are frontend files
+		this.hasFrontendFiles = DetectionService.detectFrontendFiles(this.workspacePath);
+
 		this.refresh();
 	}
 
@@ -131,10 +148,12 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
                 new TechnologyTreeItem(tech, this.extensionUri) as unknown as TreeElement
             );
             
-            // Add frontend skills section separator
-            children.push(
-                new FrontendSkillsHeaderItem(FRONTEND_SKILLS.length) as unknown as TreeElement
-            );
+            // Add frontend skills section only if frontend files are detected
+            if (this.hasFrontendFiles) {
+                children.push(
+                    new FrontendSkillsHeaderItem(FRONTEND_SKILLS.length) as unknown as TreeElement
+                );
+            }
             
             return Promise.resolve(children);
         }
@@ -171,6 +190,13 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	 */
 	getDetectedTechnologies(): Technology[] {
 		return this.detectedTechnologies;
+	}
+
+	/**
+	 * Gets whether frontend files were detected
+	 */
+	hasFrontendFilesDetected(): boolean {
+		return this.hasFrontendFiles;
 	}
 
 	/**

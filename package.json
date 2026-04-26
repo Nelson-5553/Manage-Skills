@@ -64,12 +64,17 @@
         "title": "Install Technology Skills",
         "icon": "$(arrow-circle-down)"
       },
-      {
-        "command": "manage-skills.installAllSuggestedSkills",
-        "title": "Install All Suggested Skills",
-        "icon": "$(layers)"
-      }
-    ],
+       {
+         "command": "manage-skills.installAllSuggestedSkills",
+         "title": "Install All Suggested Skills",
+         "icon": "$(layers)"
+       },
+       {
+         "command": "manage-skills.installFrontendSkills",
+         "title": "Install Frontend Skills",
+         "icon": "$(arrow-circle-down)"
+       }
+     ],
     "menus": {
       "commandPalette": [
        {
@@ -87,26 +92,36 @@
           "when": "viewItem == available-technology || viewItem == installed-technology",
           "group": "inline@1"
         },
-        {
-          "command": "manage-skills.installAllSuggestedSkills",
-          "when": "viewItem == suggested-skills-header",
-          "group": "inline@1"
-        },
-        {
-          "command": "manage-skills.redetectTechnologies",
-          "when": "viewItem == suggested-skills-header",
-          "group": "inline@1"
-        },
-        {
-          "command": "manage-skills.installSkill",
-          "when": "viewItem == skill-item",
-          "group": "inline@1"
-        },
-        {
-          "command": "manage-skills.openDocs",
-          "when": "viewItem == skill-item",
-          "group": "inline@1"
-        }
+         {
+           "command": "manage-skills.installAllSuggestedSkills",
+           "when": "viewItem == suggested-skills-header",
+           "group": "inline@1"
+         },
+         {
+           "command": "manage-skills.installFrontendSkills",
+           "when": "viewItem == frontend-skills-header",
+           "group": "inline@1"
+         },
+         {
+           "command": "manage-skills.redetectTechnologies",
+           "when": "viewItem == suggested-skills-header",
+           "group": "inline@1"
+         },
+         {
+           "command": "manage-skills.installSkill",
+           "when": "viewItem == skill-item",
+           "group": "inline@1"
+         },
+         {
+           "command": "manage-skills.installSkill",
+           "when": "viewItem == frontend-skill-item",
+           "group": "inline@1"
+         },
+         {
+           "command": "manage-skills.openDocs",
+           "when": "viewItem == skill-item",
+           "group": "inline@1"
+         }
       ]
     }
   },

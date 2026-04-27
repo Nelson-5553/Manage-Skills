@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { BaseSkillTreeProvider, TechnologyTreeItem, SkillItemTreeItem, TreeElement, HeaderTreeItem } from './BaseSkillTreeProvider';
 import { Technology } from '../models/Technology';
 import { DetectionService } from '../services/DetectionService';
+import { FRONTEND_SKILLS } from '../config/skills-map';
 
 /**
  * Header for suggested skills
@@ -27,11 +28,64 @@ class SuggestedSkillsHeaderItem extends vscode.TreeItem implements HeaderTreeIte
 }
 
 /**
+ * Header for frontend skills subsection
+ */
+class FrontendSkillsHeaderItem extends vscode.TreeItem implements HeaderTreeItem {
+	public buttons?: any[];
+
+	constructor(skillsCount: number) {
+		super('Frontend Skills', vscode.TreeItemCollapsibleState.Expanded);
+		this.description = `${skillsCount} skill${skillsCount !== 1 ? 's' : ''}`;
+		this.contextValue = 'frontend-skills-header';
+
+		// Add inline button
+		this.buttons = [
+			{
+				iconPath: new vscode.ThemeIcon('arrow-down'),
+				tooltip: 'Install all frontend skills',
+				command: 'manage-skills.installFrontendSkills',
+				arguments: []
+			}
+		];
+	}
+}
+
+/**
+ * Frontend skill item
+ */
+class FrontendSkillItemTreeItem extends vscode.TreeItem {
+	public buttons?: any[];
+
+	constructor(
+		public readonly skillName: string
+	) {
+		super(skillName, vscode.TreeItemCollapsibleState.None);
+		this.tooltip = this.buildTooltip();
+		this.contextValue = 'frontend-skill-item';
+
+		// Add inline button for installation
+		this.buttons = [
+			{
+				iconPath: new vscode.ThemeIcon('arrow-down'),
+				tooltip: 'Install this skill',
+				command: 'manage-skills.installSkill',
+				arguments: [skillName]
+			}
+		];
+	}
+
+	private buildTooltip(): string {
+		return `Skill: ${this.skillName}\n\nClick to install skill`;
+	}
+}
+
+/**
  * Shows suggested technologies detected in workspace
  */
 export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	private workspacePath: string = '';
 	private detectedTechnologies: Technology[] = [];
+	private hasFrontendFiles: boolean = false;
 
 	constructor(technologies: Technology[],  extensionUri: vscode.Uri) {
 		super(technologies, extensionUri);
@@ -52,6 +106,7 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	private detectTechnologies(): void {
 		if (!this.workspacePath) {
 			this.detectedTechnologies = [];
+			this.hasFrontendFiles = false;
 			this.refresh();
 			return;
 		}
@@ -74,6 +129,9 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 			})
 			.filter(tech => tech.skills && tech.skills.length > 0);
 
+		// Detect if there are frontend files
+		this.hasFrontendFiles = DetectionService.detectFrontendFiles(this.workspacePath);
+
 		this.refresh();
 	}
 
@@ -84,14 +142,29 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
             return Promise.resolve([headerItem]);
         }
 
-        // Returns detected technologies
+        // Returns detected technologies and frontend skills section
         if (element instanceof SuggestedSkillsHeaderItem) {
-            return Promise.resolve(
-                this.detectedTechnologies.map(tech => 
-                    new TechnologyTreeItem(tech, this.extensionUri) as unknown as TreeElement
-                )
+            const children: TreeElement[] = this.detectedTechnologies.map(tech => 
+                new TechnologyTreeItem(tech, this.extensionUri) as unknown as TreeElement
             );
+            
+            // Add frontend skills section only if frontend files are detected
+            if (this.hasFrontendFiles) {
+                children.push(
+                    new FrontendSkillsHeaderItem(FRONTEND_SKILLS.length) as unknown as TreeElement
+                );
+            }
+            
+            return Promise.resolve(children);
         }
+
+		// Returns frontend skills for the frontend skills header
+		if (element instanceof FrontendSkillsHeaderItem) {
+			const skillItems = FRONTEND_SKILLS.map(
+				skill => new FrontendSkillItemTreeItem(skill) as unknown as TreeElement
+			);
+			return Promise.resolve(skillItems);
+		}
 
 		// Returns skills for technology
 		if (element instanceof TechnologyTreeItem) {
@@ -117,6 +190,13 @@ export class SuggestedSkillsProvider extends BaseSkillTreeProvider {
 	 */
 	getDetectedTechnologies(): Technology[] {
 		return this.detectedTechnologies;
+	}
+
+	/**
+	 * Gets whether frontend files were detected
+	 */
+	hasFrontendFilesDetected(): boolean {
+		return this.hasFrontendFiles;
 	}
 
 	/**

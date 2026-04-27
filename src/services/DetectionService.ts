@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { SKILLS_MAP, Technology } from '../config/skills-map';
+import { SKILLS_MAP, Technology, WEB_FRONTEND_EXTENSIONS } from '../config/skills-map';
 import { AgentDetector } from './AgentDetector';
 
 // Re-export for backward compatibility
@@ -206,5 +206,63 @@ export class DetectionService {
 	 */
 	private static checkGradleContent(content: string, patterns: string[]): boolean {
 		return patterns.some(pattern => content.includes(pattern));
+	}
+
+	/**
+	 * Detects if there are web frontend files in the workspace
+	 */
+	static detectFrontendFiles(projectPath: string): boolean {
+		if (!projectPath) {
+			return false;
+		}
+
+		try {
+			return this.scanDirectoryForFrontendFiles(projectPath, 0);
+		} catch (error) {
+			return false;
+		}
+	}
+
+	/**
+	 * Recursively scans directory for frontend files with max depth of 3
+	 */
+	private static scanDirectoryForFrontendFiles(dirPath: string, depth: number): boolean {
+		// Limit recursion depth to avoid performance issues
+		if (depth > 3) {
+			return false;
+		}
+
+		try {
+			const entries = fs.readdirSync(dirPath);
+
+			for (const entry of entries) {
+				// Skip node_modules and other common folders
+				if (['node_modules', '.git', '.vscode', 'dist', 'build', 'out'].includes(entry)) {
+					continue;
+				}
+
+				const fullPath = path.join(dirPath, entry);
+				const stat = fs.statSync(fullPath);
+
+				// Check file extension
+				if (stat.isFile()) {
+					const ext = path.extname(entry);
+					if (WEB_FRONTEND_EXTENSIONS.has(ext)) {
+						return true;
+					}
+				}
+
+				// Recursively check subdirectories
+				if (stat.isDirectory()) {
+					if (this.scanDirectoryForFrontendFiles(fullPath, depth + 1)) {
+						return true;
+					}
+				}
+			}
+		} catch (error) {
+			// Silently ignore errors
+		}
+
+		return false;
 	}
 }
